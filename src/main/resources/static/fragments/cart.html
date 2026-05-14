@@ -1,0 +1,35 @@
+<div th:fragment="cartElement"> <div class="cart-overlay" id="cartOverlay"></div>
+
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Giỏ hàng của bạn</h3>
+            <span class="close-cart" id="closeCartBtn">&times;</span>
+        </div>
+
+        <div class="cart-body">
+            <div class="cart-item">
+                <img th:src="@{/assets/img/burrito_chicken.jpg}" alt="Bánh" class="cart-item-img">
+                <div class="cart-item-info" th:each="item : ${carts}">
+                    <h4 th:text = "${item.productName}"></h4>
+                    <p class="cart-item-price" th:text = "${item.price}"></p>
+                    <p class="cart-item-discount" th:text = "${item.discount}"></p>
+                    <div class="quantity-control">
+                        <button>-</button>
+                        <input type="text" value="1" readonly>
+                        <button>+</button>
+                    </div>
+                    <h5 class = "cart-item-totalPrice" th:text = "${item.totalPrice}"></h5>
+                </div>
+                <span class="remove-item">&times;</span>
+            </div>
+        </div>
+
+        <div class="cart-footer">
+            <div class="total-price">
+                <span>Tạm tính:</span>
+                <span class="price-value">50.000vnd</span>
+            </div>
+            <a href="/checkout" class="checkout-btn">THANH TOÁN</a>
+        </div>
+    </div>
+</div>

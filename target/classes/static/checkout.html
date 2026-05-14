@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Thanh Toán Tình Cảm - Bakery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- RESET & HỆ THỐNG MÀU --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: #FDF6EE; color: #333; line-height: 1.6; padding: 40px 0; }
+        .main-container { max-width: 1100px; margin: auto; padding: 0 20px; }
+
+        h2, h3 { font-family: 'Playfair Display', serif; color: #000; }
+
+        /* --- LAYOUT 2 CỘT --- */
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        /* --- CỘT TRÁI: THÔNG TIN GIAO HÀNG --- */
+        .form-section {
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+        }
+
+        .section-title { font-size: 1.8rem; margin-bottom: 30px; border-bottom: 2px solid #FDF6EE; padding-bottom: 10px; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #555; }
+        .form-control {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: #fafafa;
+            transition: 0.3s;
+        }
+        .form-control:focus { outline: none; border-color: #ff4d6d; background: #fff; box-shadow: 0 0 10px rgba(255, 77, 109, 0.1); }
+
+        /* --- PHƯƠNG THỨC TRẢ TÌNH CẢM --- */
+        .payment-methods { margin-top: 30px; }
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #fff8f9;
+            border: 1px solid #ffeef1;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .payment-option:hover { border-color: #ff4d6d; }
+        .payment-option input { margin-right: 15px; accent-color: #ff4d6d; transform: scale(1.2); }
+        .payment-option label { cursor: pointer; font-weight: 500; flex: 1; }
+
+        /* --- CỘT PHẢI: TÓM TẮT ĐƠN HÀNG --- */
+        .summary-section {
+            background: #fffaf5;
+            padding: 35px;
+            border-radius: 24px;
+            border: 1px solid #f0e6d9;
+            position: sticky;
+            top: 40px;
+        }
+
+        .summary-title { font-size: 1.5rem; margin-bottom: 25px; }
+
+        .item-list { max-height: 400px; overflow-y: auto; margin-bottom: 25px; }
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .item-img { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; background: #fff; border: 1px solid #f9f9f9; }
+        .item-info { flex: 1; }
+        .item-info h4 { font-size: 1rem; margin-bottom: 4px; }
+        .item-info p { font-size: 0.9rem; color: #888; }
+
+        .total-box { margin-top: 20px; padding-top: 20px; border-top: 2px dashed #e8dfd5; }
+        .total-row { display: flex; justify-content: space-between; font-size: 1.1rem; margin-bottom: 10px; }
+        .final-price { font-size: 1.5rem; font-weight: 700; color: #ff4d6d; }
+
+        .btn-order {
+            width: 100%;
+            padding: 20px;
+            background: #ff4d6d;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 20px;
+            text-transform: uppercase;
+            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.2);
+        }
+        .btn-order:hover { background: #ff1f4a; transform: translateY(-3px); }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 850px) {
+            .checkout-grid { grid-template-columns: 1fr; }
+            .summary-section { position: static; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="checkout-grid">
+
+        <div class="form-section">
+            <h2 class="section-title">Thông tin đơn hàng của Công Chúa</h2>
+            <form id="orderForm">
+                <div class="form-group">
+                    <label>Họ và tên</label>
+                    <input type="text" id="customerName" class="form-control" value="Công chúa mic iuu">
+                </div>
+
+                <div class="form-group">
+                    <label>Số điện thoại</label>
+                    <input type="tel" id="phoneNumber" class="form-control" value="0936892650">
+                </div>
+
+                <div class="form-group">
+                    <label>Địa chỉ nhận bánh</label>
+                    <input type="text" id="address" class="form-control" placeholder="Công chúa mún lấy bánh ở âu nè..." required>
+                </div>
+
+                <div class="form-group">
+                    <label>Ghi chú cho anh</label>
+                    <textarea id="note" class="form-control" rows="3" placeholder="Công chúa mún dặn anh gì hog ạa ?"></textarea>
+                </div>
+
+                <div class="payment-methods">
+                    <h3>Chọn phương thức thanh toán:</h3>
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="chơm mắt" checked>
+                        <label>Chơm mắt 👀</label>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="chơm môi">
+                        <label>Chơm môi 💋</label>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="chơm má">
+                        <label>Chơm má 😊</label>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="chơm trán">
+                        <label>Chơm trán 😇</label>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="ôm">
+                        <label>Ôm thật chặt 🤗</label>
+                    </label>
+                </div>
+            </form>
+        </div>
+
+        <div class="summary-section">
+            <h3 class="summary-title">Đơn hàng của bạn</h3>
+
+            <div id="checkoutCartItems" class="item-list">
+                <p style="text-align: center; padding: 20px; color: #888;">Đang soạn quà cho em...</p>
+            </div>
+
+            <div class="total-box">
+                <div class="total-row">
+                    <span>Tạm tính:</span>
+                    <span id="subTotal">0 cái ôm</span>
+                </div>
+                <div class="total-row">
+                    <span>Phí ship:</span>
+                    <span style="color: #6ab04c; font-weight: bold;">Tình yêu (Free)</span>
+                </div>
+                <div class="total-row" style="margin-top: 15px;">
+                    <span style="font-weight: 600;">Tổng cộng:</span>
+                    <span id="finalTotal" class="final-price">0 cái ôm và chơm</span>
+                </div>
+            </div>
+
+            <button type="button" class="btn-order" onclick="processOrder()">XÁC NHẬN GỬI TÌNH CẢM ❤️</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    let checkoutItems = []; // Lưu danh sách bánh đang thanh toán
+
+    document.addEventListener("DOMContentLoaded", async function() {
+        const params = new URLSearchParams(window.location.search);
+        const productId = params.get('productId');
+        const quantity = params.get('quantity');
+
+        const container = document.getElementById('checkoutCartItems');
+        let totalAmount = 0;
+
+        try {
+            if (productId) {
+                // TRƯỜNG HỢP 1: MUA NGAY (Lấy 1 sản phẩm)
+                const productData = await fetch(`/api/products/${productId}`).then(res => res.json());
+                const p = productData.product;
+                const finalPrice = p.price - (p.discount || 0);
+                const itemTotal = finalPrice * quantity;
+
+                checkoutItems = [{
+                    productId: p.id,
+                    productName: p.name,
+                    productImage: p.imageUrl || p.image_url,
+                    price: p.price,
+                    quantity: parseInt(quantity),
+                    totalPrice: itemTotal
+                }];
+            } else {
+                // TRƯỜNG HỢP 2: THANH TOÁN TỪ GIỎ HÀNG
+                const cartItems = await fetch('/api/cart').then(res => res.json());
+                checkoutItems = cartItems;
+            }
+
+            // Vẽ danh sách bánh lên cột bên phải
+            if (checkoutItems.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: red;">Hông thấy món nào hết trơn á!</p>';
+                return;
+            }
+
+            container.innerHTML = checkoutItems.map(item => {
+                totalAmount += item.totalPrice;
+                const unitPrice = item.totalPrice / item.quantity;
+                const img = item.productImage || '/assets/img/default-cake.png';
+                return `
+                    <div class="cart-item">
+                        <img src="${img}" class="item-img" alt="${item.productName}">
+                        <div class="item-info">
+                            <h4>${item.productName}</h4>
+                            <p>${new Intl.NumberFormat('vi-VN').format(unitPrice)} cái ôm x ${item.quantity}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            const formattedTotal = new Intl.NumberFormat('vi-VN').format(totalAmount) + ' cái ôm và chơm';
+            document.getElementById('subTotal').innerText = formattedTotal;
+            document.getElementById('finalTotal').innerText = formattedTotal;
+
+        } catch (error) {
+            console.error("Lỗi:", error);
+            container.innerHTML = '<p style="color:red; text-align: center;">Lỗi tải đơn hàng rồi công chúa ơi!</p>';
+        }
+    });
+
+    // Hàm gửi dữ liệu lên Server
+    async function processOrder() {
+        if (checkoutItems.length === 0) {
+            alert("Giỏ hàng của em đang trống kìa!");
+            return;
+        }
+
+        // Chuẩn bị dữ liệu theo List<OrderRequestDTO> của Backend
+        const orderData = checkoutItems.map(item => ({
+            customerName: document.getElementById('customerName').value,
+            phoneNumber: document.getElementById('phoneNumber').value,
+            address: document.getElementById('address').value,
+            note: document.getElementById('note').value,
+            paymentMethod: document.querySelector('input[name="payment"]:checked').value,
+            totalPrice: item.totalPrice
+        }));
+
+        try {
+            const response = await fetch('/api/order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orderData)
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                window.location.href = "/success.html"; // Trang chúc mừng
+            } else {
+                alert(result.message);
+            }
+        } catch (e) {
+            alert("Anh chin mời công chúa iu đăng nhập rùi gửi lại đơn giúp anh nhé!");
+        }
+    }
+</script>
+</body>
+</html>

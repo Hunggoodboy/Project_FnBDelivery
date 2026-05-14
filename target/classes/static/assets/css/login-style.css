@@ -1,0 +1,180 @@
+/* --- HỆ THỐNG DESIGN "TÌNH YÊU LUNG LINH" CHO CÔNG CHÚA --- */
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Quicksand:wght@400;600;700&display=swap');
+
+:root {
+    --primary-color: #be2edd; /* Tím lãng mạn */
+    --primary-hover: #ff9ff3; /* Hồng kem ngọt ngào */
+    --text-color: #2d3436;
+    --bg-color: #fdf6ee; /* Màu nền kem ấm áp */
+    --white: #ffffff;
+    --gray: #dfe6e9;
+    --accent-pink: #ff4d6d;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Quicksand', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hiệu ứng trái tim bay lơ lửng trên nền */
+body::before, body::after {
+    content: '❤️';
+    position: absolute;
+    font-size: 40px;
+    opacity: 0.15;
+    z-index: 0;
+    animation: floatHearts 10s infinite linear;
+}
+body::before { top: 10%; left: 10%; animation-delay: -5s; }
+body::after { bottom: 15%; right: 10%; animation-delay: -2s; }
+
+.container {
+    position: relative;
+    width: 450px;
+    background: var(--white);
+    padding: 40px;
+    border-radius: 30px;
+    box-shadow: 0 15px 35px rgba(190, 46, 221, 0.15);
+    z-index: 1;
+    border: 2px solid rgba(255, 159, 243, 0.3);
+    animation: slideInUp 0.8s ease-out;
+}
+
+.form-box h2 {
+    font-family: 'Comfortaa', cursive;
+    text-align: center;
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 30px;
+}
+
+.form-box h2 i {
+    margin-right: 10px;
+    color: var(--accent-pink);
+    animation: heartBeat 1.2s infinite;
+}
+
+/* --- Ô NHẬP LIỆU "BO GÓC TRÁI TIM" --- */
+.input-group {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px 15px 15px 45px;
+    background: #f9f9f9;
+    border: 1px solid var(--gray);
+    outline: none;
+    border-radius: 15px;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    border-color: var(--primary-color);
+    background: var(--white);
+    box-shadow: 0 0 10px rgba(190, 46, 221, 0.1);
+}
+
+.input-group i {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: #a0a0a0;
+    transition: 0.3s;
+}
+
+.input-group input:focus + i {
+    color: var(--primary-color);
+}
+
+.input-group .toggle-password {
+    left: auto;
+    right: 15px;
+    cursor: pointer;
+}
+
+/* --- NÚT BẤM TÌNH YÊU --- */
+.btn {
+    width: 100%;
+    height: 55px;
+    background: var(--primary-color);
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    color: var(--white);
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 8px 15px rgba(190, 46, 221, 0.2);
+    margin-top: 10px;
+}
+
+.btn:hover {
+    background: #a51dc4;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 20px rgba(190, 46, 221, 0.3);
+}
+
+.forgot-pass {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.forgot-pass a {
+    font-size: 14px;
+    color: #7f8c8d;
+    text-decoration: none;
+}
+
+.forgot-pass a:hover {
+    color: var(--primary-color);
+}
+
+.toggle-box {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 15px;
+    color: #666;
+}
+
+.toggle-box a {
+    color: var(--primary-color);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+/* Animations */
+@keyframes slideInUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes heartBeat {
+    0% { transform: scale(1); }
+    14% { transform: scale(1.2); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.2); }
+    70% { transform: scale(1); }
+}
+
+@keyframes floatHearts {
+    0% { transform: translateY(0) rotate(0); opacity: 0.15; }
+    100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+}

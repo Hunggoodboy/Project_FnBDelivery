@@ -1,0 +1,90 @@
+/* 2. Khung giỏ hàng (Sidebar) */
+.cart-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 400px; /* Độ rộng giỏ hàng */
+    height: 100vh; /* Full chiều cao màn hình */
+    background-color: #fff;
+    z-index: 999; /* Nằm trên cùng */
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    transform: translateX(100%); /* Mặc định đẩy sang phải ẩn đi */
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Khi active thì trượt vào */
+.cart-sidebar.active {
+    transform: translateX(0);
+}
+
+/* 3. Nội dung bên trong */
+.cart-header {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-cart {
+    font-size: 28px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.cart-body {
+    flex: 1; /* Chiếm hết khoảng trống giữa */
+    padding: 20px;
+    overflow-y: auto; /* Cho phép cuộn nếu nhiều hàng */
+}
+
+/* Item trong giỏ */
+.cart-item {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.cart-item-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.cart-item-info h4 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+}
+
+.quantity-control {
+    display: flex;
+    border: 1px solid #ddd;
+    width: fit-content;
+    margin-top: 5px;
+}
+
+.quantity-control button {
+    background: none;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.quantity-control input {
+    width: 30px;
+    text-align: center;
+    border: none;
+    outline: none;
+}
+
+.remove-item {
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+    color: #999;
+}

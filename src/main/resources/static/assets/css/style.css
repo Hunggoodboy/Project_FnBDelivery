@@ -1,0 +1,795 @@
+/* --- 1. IMPORT FONTS --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');
+
+/* --- 2. CẤU HÌNH CHUNG (RESET) --- */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Montserrat', 'Inter', sans-serif; /* Ưu tiên Montserrat cho hiện đại */
+}
+
+body {
+    background-color: #f8f8f8;
+    color: #333;
+    overflow-x: hidden; /* Ngăn thanh cuộn ngang */
+}
+
+/* --- 3. THANH MENU (NAV) --- */
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    font-size: 16px;
+    font-weight: 600;
+
+    /* --- THAY ĐỔI QUAN TRỌNG Ở ĐÂY --- */
+    position: fixed; /* Đổi sticky thành fixed để nó nổi lên trên ảnh */
+    top: 0;
+    left: 0;
+    width: 100%;     /* Bắt buộc phải có width 100% khi dùng fixed */
+    z-index: 1000;
+
+    background-color: transparent; /* Đổi màu nền thành trong suốt */
+    box-shadow: none;              /* Bỏ bóng lúc đầu cho giống Uniqlo */
+
+    height: 90px;
+    padding: 0 4%;
+    transition: all 0.3s ease;     /* Thêm hiệu ứng chuyển màu mượt mà */
+}
+
+/* --- THÊM CLASS MỚI NÀY VÀO DƯỚI .nav --- */
+/* Class này sẽ được Javascript tự thêm vào khi bạn cuộn trang */
+.nav.scrolled {
+    background-color: #ffffff; /* Cuộn xuống thì hiện nền trắng */
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08); /* Hiện lại bóng */
+}
+
+.nav li a {
+    display: flex;
+    align-items: center;
+    color: #333;
+    gap: 8px;
+    transition: color 0.3s;
+    padding: 10px;
+}
+
+.nav li a:hover {
+    color: #6ab04c;
+}
+
+/* Logo & Hotline */
+.nav .home {
+    font-size: 20px;
+    font-weight: 800;
+    color: #6ab04c !important;
+}
+
+.nav .hotline {
+    margin-right: 15px;
+    white-space: nowrap;
+}
+
+/* Thanh tìm kiếm */
+.nav .find {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 20px;
+    position: relative;
+}
+
+.nav .find #search {
+    height: 45px;
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    padding: 0 50px 0 20px;
+    outline: none;
+    background-color: #f9f9f9;
+    font-size: 14px;
+}
+
+/* Nút kính lúp */
+.nav .find button {
+    position: absolute;
+    /* Căn vị trí nút bấm dựa trên độ rộng của ô input */
+    right: calc(50% - 250px + 5px); /* 250px là một nửa của max-width 500px */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 38px;
+    height: 38px;
+    border: none;
+    background: #6ab04c;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Media query để chỉnh nút kính lúp khi màn hình nhỏ */
+@media (max-width: 900px) {
+    .nav .find button {
+        right: 5px; /* Khi ô input co lại, nút bám sát lề phải */
+    }
+}
+
+/* --- 4. DROPDOWN MENU (LIÊN HỆ) --- */
+.Contact {
+    position: relative; /* QUAN TRỌNG: Giữ menu con không bị văng */
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    height: 100%;
+}
+
+/* Chỉnh ảnh icon lá thư */
+.Contact .contact-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+/* Menu con (Fb, Insta, Tiktok) */
+.contact-nav {
+    display: none;
+    position: absolute;
+    top: 100%; /* Nằm ngay dưới đáy thanh menu */
+    right: 0;
+    width: 180px;
+    background-color: #ffffff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    padding: 10px 0;
+    list-style: none;
+    z-index: 9999;
+    border-top: 3px solid #6ab04c;
+}
+
+.Contact:hover .contact-nav {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.contact-nav li a {
+    padding: 10px 20px;
+    color: #333;
+    font-size: 14px;
+    gap: 12px;
+}
+
+.contact-nav li a img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.contact-nav li a:hover {
+    background-color: #f0f7ec;
+    color: #6ab04c;
+}
+
+/* --- 5. SLIDER (BANNER) --- */
+.hero-slider {
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-slider img {
+    width: 100%;
+    height: 600px;
+    object-fit: cover; /* Ảnh đẹp, không méo */
+    display: block;
+}
+
+/* --- 6. PHẦN TÌM KIẾM CALORIES (CHOBANI STYLE) --- */
+.searchCalories {
+    position: relative;
+    width: 100%;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: #fff; /* Nền trắng riêng cho khu vực này */
+    padding: 50px 0;
+}
+
+.searchCalories .question {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: #0f3d32;
+    margin-bottom: 10px;
+}
+
+.searchCalories .typing {
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 100%;
+    max-width: 900px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 4rem;
+    text-align: center;
+    color: #0f3d32;
+    padding: 10px 0;
+}
+
+.searchCalories .typing::placeholder {
+    color: #e6e6e6;
+}
+
+/* Ảnh trang trí bay bay */
+.searchImg img {
+    position: absolute;
+    object-fit: contain;
+    transition: transform 0.5s ease;
+}
+.searchImg img:hover { transform: scale(1.1); }
+
+.img-search1 { top: 10%; left: 5%; width: 150px; transform: rotate(-10deg); }
+.img-search2 { top: 15%; right: 5%; width: 180px; transform: rotate(10deg); }
+.img-search3 { bottom: 5%; left: 15%; width: 120px; }
+.img-search4 { bottom: 2%; left: 50%; transform: translateX(-50%); width: 160px; z-index: 5; }
+.img-search5 { bottom: 5%; right: 15%; width: 120px; }
+
+/* --- 7. DANH SÁCH SẢN PHẨM (MILK BAR STYLE) --- */
+.favorite-products {
+    background-color: #FDF6EE;
+    padding: 80px 5%; /* Padding % để responsive tốt hơn */
+    text-align: center;
+}
+
+.product-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.product-description {
+    font-size: 1.1rem;
+    color: #555;
+    max-width: 700px;
+    margin: 0 auto 50px auto;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.product-card {
+    background-color: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.product-img {
+    background-color: #FDF6EE;
+    padding: 30px;
+    height: 280px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.product-info {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-info h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    min-height: 2.4em; /* Giữ đều dòng cho tên bánh */
+}
+
+.price { color: #999; text-decoration: line-through; font-size: 0.9rem; }
+.discount { color: #e74c3c; font-weight: bold; font-size: 0.9rem; margin-left: 5px; }
+.totalPrice { font-size: 1.2rem; font-weight: bold; color: #000; margin-top: 10px; display: block;}
+/*.totalPrice::after { content: " đ"; font-size: 0.8em; }*/
+
+/* Animation fade in */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- THANH MENU (NAV) --- */
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    font-size: 16px;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #ffffff;
+    /* Tăng chiều cao lên 90px để thoáng hơn */
+    height: 90px;
+    /* Tăng khoảng cách lề 2 bên */
+    padding: 0 4%;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+}
+
+/* Style chung cho các liên kết trong nav */
+.nav li a {
+    display: flex;
+    align-items: center;
+    color: #333;
+    /* Tăng khoảng cách giữa icon và chữ */
+    gap: 10px;
+    transition: color 0.3s;
+    /* Thêm padding để vùng bấm rộng hơn */
+    padding: 10px;
+}
+
+.nav li a:hover {
+    color: #6ab04c;
+}
+
+/* --- CÁC PHẦN TỬ TRONG NAV --- */
+
+/* Logo và Hotline */
+.nav .home {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.nav .hotline {
+    /* Thêm khoảng cách bên phải để tách biệt */
+    margin-right: 20px;
+    white-space: nowrap; /* Ngăn không cho chữ bị xuống dòng */
+}
+
+/* --- SỬA THANH TÌM KIẾM & ICON BỊ MÉO --- */
+.nav .find {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 30px; /* Khoảng cách với 2 bên */
+    position: relative; /* Để căn chỉnh nút kính lúp */
+}
+
+.nav .find #search {
+    height: 45px; /* Tăng chiều cao ô nhập */
+    width: 100%;
+    max-width: 450px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    padding: 0 50px 0 20px; /* Padding phải lớn để tránh nút kính lúp */
+    outline: none;
+    background-color: #f9f9f9;
+    font-size: 14px;
+}
+
+/* Nút kính lúp */
+.nav .find button {
+    position: absolute;
+    /* Căn vị trí nút bấm */
+    right: calc(50% - 225px + 5px); /* Căn theo max-width của ô input */
+    top: 50%;
+    transform: translateY(-50%);
+
+    /* Kích thước cố định để không bị méo */
+    width: 38px;
+    height: 38px;
+
+    border: none;
+    background: #6ab04c; /* Màu nền nút */
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+/* Điều chỉnh vị trí nút khi màn hình nhỏ hơn max-width */
+@media (max-width: 850px) {
+    .nav .find button {
+        right: 5px;
+    }
+}
+
+
+.nav .find button:hover {
+    background: #57923d;
+}
+
+/* Các link bên phải (Tài khoản, Liên hệ) */
+.right-links {
+    display: flex;
+    gap: 15px; /* Khoảng cách giữa các mục */
+}
+
+
+.hero-slider {
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-slider img {
+    width: 100%;
+    /* Tăng chiều cao ảnh lên để trông to và đẹp hơn */
+    height: 772px;
+    /* Quan trọng: giúp ảnh không bị méo khi set chiều cao cố định */
+
+    object-fit: cover;
+    display: block;
+}
+
+/* Style tạm cho các icon ở dưới */
+.icon-section {
+    display: flex;
+    justify-content: space-between;
+    padding: 50px 10%;
+}
+.icon-section img {
+    width: 80px;
+    height: auto;
+}
+
+body {
+    margin: 0;
+    background-color: #fff; /* Hoặc #FDF6EE nếu muốn màu kem */
+}
+
+.searchCalories {
+    position: relative;
+    width: 100%;
+    min-height: 100vh; /* Chiều cao bao trọn màn hình */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Căn giữa dọc */
+    align-items: center; /* Căn giữa ngang */
+    overflow: hidden; /* Ẩn các phần thừa nếu ảnh quá to */
+    padding-bottom: 100px; /* Chừa chỗ cho hàng ảnh bên dưới */
+}
+
+/* --- PHẦN CHỮ VÀ INPUT --- */
+.search-content {
+    z-index: 10; /* Luôn nổi lên trên ảnh nền */
+    text-align: center;
+    width: 100%;
+    max-width: 900px;
+}
+
+.searchCalories .question {
+    font-family: 'Playfair Display', serif; /* Font có chân sang trọng */
+    font-size: 2.5rem; /* Kích thước vừa phải */
+    color: #0f3d32; /* Màu xanh rêu đậm đặc trưng Chobani */
+    margin-bottom: 10px;
+    font-weight: 400;
+}
+
+.searchCalories .typing {
+    /* --- XÓA VIỀN & NỀN --- */
+    border: none !important;      /* Xóa viền bao quanh */
+    outline: none !important;     /* Xóa viền xanh/đen khi click chuột vào */
+    background: transparent;      /* Nền trong suốt để hòa với màu nền web */
+    box-shadow: none;             /* Xóa bóng đổ (nếu có) */
+
+    /* --- KÍCH THƯỚC & FONT CHỮ --- */
+    width: 100%;                  /* Chiếm hết chiều ngang container */
+    max-width: 1000px;            /* Giới hạn lại kẻo dài quá */
+    font-family: 'DM Serif Display', serif; /* Font chữ dày, có chân, rất nghệ */
+    font-size: 5rem;              /* (Tương đương 80px) - Phóng cực to */
+    line-height: 1.2;
+    text-align: center;           /* Căn giữa chữ khi gõ */
+
+    /* --- MÀU SẮC --- */
+    color: #0f3d32;               /* Màu chữ khi người dùng gõ (Xanh rêu đậm) */
+    caret-color: #0f3d32;         /* Màu của dấu nháy chuột | */
+    padding: 20px 0;              /* Tạo khoảng thở trên dưới */
+}
+
+/* Style cho dòng chữ mờ (Placeholder) */
+.searchCalories .typing::placeholder {
+    color: #e6e6e6; /* Màu xám rất nhạt giống chữ "Type something..." */
+    font-weight: 400;
+    opacity: 1;
+}
+
+/* Hiệu ứng khi click vào nhập */
+.searchCalories .typing:focus::placeholder {
+    color: #f0f0f0; /* Mờ hơn nữa khi đang gõ */
+}
+
+/* --- PHẦN ẢNH TRANG TRÍ (FLOATING IMAGES) --- */
+.searchImg img {
+    position: absolute;
+    object-fit: contain;
+    transition: transform 0.5s ease; /* Hiệu ứng mượt khi di chuột */
+}
+
+/* Ảnh 1: Góc trên trái (Yogurt) */
+.img-search1 {
+    top: 10%;
+    left: 5%;
+    width: 15%;
+    max-width: 180px;
+    transform: rotate(-10deg);
+}
+
+/* Ảnh 2: Góc trên phải (Trái cây) */
+.img-search2 {
+    top: 15%;
+    right: 5%;
+    width: 18%;
+    max-width: 220px;
+    transform: rotate(10deg);
+}
+
+/* --- DÀN HÀNG ẢNH DƯỚI ĐÁY (PRODUCT SHELF) --- */
+/* Chobani xếp các sản phẩm thành hàng ngang ở dưới cùng */
+
+.img-search3 {
+    bottom: 5%;
+    left: 20%;
+    width: 12%;
+    transform: translateY(0);
+}
+
+.img-search4 {
+    bottom: 2%;
+    left: 50%;
+    transform: translateX(-50%); /* Căn giữa chính xác */
+    width: 14%;
+    z-index: 5; /* Nổi lên trên các ảnh khác một chút */
+}
+
+.img-search5 {
+    bottom: 5%;
+    right: 20%;
+    width: 12%;
+}
+
+/* --- HIỆU ỨNG HOVER NHẸ NHÀNG (OPTIONAL) --- */
+.searchImg img:hover {
+    transform: scale(1.05) rotate(0deg); /* Phóng to nhẹ khi di chuột vào ảnh */
+}
+
+@media (max-width: 768px) {
+    .searchCalories .typing {
+        font-size: 3rem; /* Giảm cỡ chữ trên mobile */
+    }
+
+    .searchCalories .question {
+        font-size: 1.5rem;
+    }
+
+    .img-search1, .img-search2 {
+        width: 25%;
+        top: 5%;
+    }
+
+    .img-search3, .img-search5 {
+        display: none; /* Ẩn bớt cho đỡ rối trên đt */
+    }
+
+    .img-search4 {
+        width: 40%;
+        bottom: 10%;
+    }
+}
+
+
+.favorite-products {
+    background-color: #FDF6EE; /* Màu kem đặc trưng của Milk Bar */
+    padding: 80px 20px;
+    font-family: 'Inter', Helvetica, Arial, sans-serif;
+    text-align: center;
+}
+
+/* --- TIÊU ĐỀ & MÔ TẢ --- */
+.product-title {
+    font-size: 3rem; /* Chữ rất to */
+    font-weight: 900; /* Siêu đậm (Black weight) */
+    text-transform: uppercase;
+    color: #000;
+    margin: 0 0 15px 0;
+    letter-spacing: -1px; /* Dồn chữ lại cho chặt chẽ giống phong cách Mỹ */
+    line-height: 1.1;
+}
+
+.product-description {
+    font-size: 1.1rem;
+    color: #4a4a4a;
+    max-width: 700px;
+    margin: 0 auto 60px auto;
+    line-height: 1.5;
+}
+
+/* --- LƯỚI SẢN PHẨM (GRID) --- */
+.product-grid {
+    display: grid;
+    /* Tự động chia cột: tối thiểu 280px, tối đa 1fr. Giúp responsive tự động */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* --- THẺ SẢN PHẨM (CARD) --- */
+.product-card {
+    background-color: #fff;
+    border-radius: 12px;
+    overflow: hidden; /* Để ảnh không bị tràn ra khỏi góc bo tròn */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-5px); /* Hiệu ứng bay lên nhẹ khi di chuột */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+/* --- ẢNH SẢN PHẨM --- */
+.product-img {
+    background-color: #FDF6EE; /* Nền ảnh trùng màu nền web (giống ảnh mẫu) */
+    padding: 20px; /* Tạo khoảng thở cho ảnh */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px; /* Chiều cao cố định cho khung ảnh */
+}
+
+.product-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Giữ nguyên tỉ lệ ảnh, không bị méo */
+    /* Hoặc dùng object-fit: cover nếu muốn ảnh tràn viền */
+}
+
+/* --- THÔNG TIN SẢN PHẨM --- */
+.product-info {
+    padding: 25px;
+    background-color: white;
+    text-align: center;
+    flex-grow: 1; /* Đẩy phần này chiếm hết khoảng trống còn lại */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-info h3 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin: 0 0 15px 0;
+    color: #000;
+    min-height: 2.4em; /* Đảm bảo tên dài 2 dòng vẫn thẳng hàng */
+}
+
+/* --- GIÁ CẢ --- */
+.product-info p {
+    margin: 5px 0;
+    font-size: 0.95rem;
+}
+
+/* Giá gốc (gạch ngang) */
+.price {
+    color: #888;
+    text-decoration: line-through;
+    font-size: 0.9rem !important;
+}
+
+/* Phần giảm giá */
+.discount {
+    color: #e74c3c; /* Màu đỏ nổi bật */
+    font-weight: bold;
+    font-size: 0.85rem !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Giá cuối cùng (Tiền phải trả) */
+.totalPrice {
+    font-size: 1.2rem !important;
+    font-weight: bold;
+    color: #000;
+    margin-top: 10px !important;
+}
+
+/* Thêm đơn vị tiền tệ nhỏ hơn nếu cần */
+/*.totalPrice span::after {*/
+/*    content: " đ";*/
+/*    font-size: 0.8em;*/
+/*    vertical-align: top;*/
+/*}*/
+/* --- CẤU HÌNH SCROLL SNAP (CUỘN TRANG) --- */
+
+/* 1. Khóa thanh cuộn của Body lại (để cuộn trong container) */
+body {
+    overflow: hidden; /* Ẩn thanh cuộn mặc định của trình duyệt */
+}
+
+/* 2. Menu phải cố định (Fixed) để luôn nổi trên cùng khi cuộn */
+.nav {
+    position: fixed; /* Đổi từ sticky sang fixed */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* 3. Thiết lập hộp chứa cuộn */
+.scroll-container {
+    /* Chiều cao bằng đúng màn hình thiết bị */
+    height: 100vh;
+
+    /* Cho phép cuộn dọc */
+    overflow-y: scroll;
+
+    /* Kích hoạt chế độ bắt dính (Snap) */
+    scroll-snap-type: y mandatory;
+
+    /* Cuộn mượt mà */
+    scroll-behavior: smooth;
+}
+
+/* 4. Thiết lập từng trang con */
+.scroll-area {
+    /* Mỗi section bắt buộc cao tối thiểu bằng màn hình */
+    min-height: 100vh;
+
+    /* Điểm dính: Khi cuộn tới, mép trên (start) của section sẽ dính vào mép trên màn hình */
+    scroll-snap-align: start;
+
+    /* Đảm bảo nội dung hiển thị đẹp */
+    position: relative;
+    width: 100%;
+
+    /* Xử lý khoảng trống cho Menu (Vì menu fixed sẽ che mất nội dung) */
+    padding-top: 90px; /* Bằng chiều cao của .nav */
+    box-sizing: border-box;
+}
+
+
+/* Tinh chỉnh lại Slider để nó full màn hình đẹp hơn trong chế độ này */
+.hero-slider img {
+    height: calc(100vh - 90px); /* Full màn hình trừ đi menu */
+    object-fit: cover;
+}
