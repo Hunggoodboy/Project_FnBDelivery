@@ -126,9 +126,12 @@
       <option name="ALTERNATIVE_JRE_PATH" value="corretto-17" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <envs>
-        <env name="Gemini-Key" value="AIzaSyAGwup9olqKff7dpi8zurq4y3UjYmmETgA" />
-        <env name="Password-Email" value="bhxgbtjqnqqknlgi" />
-        <env name="Password-Database" value="hung0335321015" />
+        <env name="DB_PASSWORD" value="hung0335321015" />
+        <env name="DB_URL" value="jdbc:postgresql://localhost:5432/FoodAndFlower" />
+        <env name="DB_USERNAME" value="postgres" />
+        <env name="GEMINI_KEY" value="AIzaSyAGwup9olqKff7dpi8zurq4y3UjYmmETgA" />
+        <env name="PASSWORD_EMAIL" value="bhxgbtjqnqqknlgi" />
+        <env name="USERNAME_EMAIL" value="hungmk2005@gmail.com" />
       </envs>
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <module name="backend" />
@@ -183,7 +186,7 @@
       <workItem from="1773451038464" duration="1195000" />
       <workItem from="1773642455803" duration="1000" />
       <workItem from="1778604602410" duration="27812000" />
-      <workItem from="1778740807032" duration="6168000" />
+      <workItem from="1778740807032" duration="6556000" />
     </task>
     <servers />
   </component>
