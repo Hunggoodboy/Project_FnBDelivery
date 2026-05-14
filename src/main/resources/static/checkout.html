@@ -273,7 +273,11 @@
             address: document.getElementById('address').value,
             note: document.getElementById('note').value,
             paymentMethod: document.querySelector('input[name="payment"]:checked').value,
-            totalPrice: item.totalPrice
+            totalPrice: item.totalPrice,
+
+            // --- THÊM 2 DÒNG NÀY ---
+            nameOfFood: item.productName, // Lấy tên bánh từ danh sách thanh toán
+            quantity: item.quantity.toString() // Chuyển số lượng thành chuỗi theo DTO
         }));
 
         try {
@@ -285,7 +289,7 @@
 
             const result = await response.json();
             if (result.success) {
-                window.location.href = "/success.html"; // Trang chúc mừng
+                window.location.href = "/success.html";
             } else {
                 alert(result.message);
             }

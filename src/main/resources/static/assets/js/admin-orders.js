@@ -72,6 +72,8 @@ function renderOrders(orders, title) {
         row.innerHTML = `
             <td>#${order.id}</td>
             <td><strong>${order.customerName}</strong></td>
+            <td style="color: #ff4d6d; font-weight: 600;">${order.nameOfFood || 'N/A'}</td>
+            <td>${order.quantity || '0'}</td>
             <td>${order.phoneNumber}</td>
             <td><span title="${order.address}">${truncateText(order.address, 20)}</span></td>
             <td>${getPaymentBadge(order.paymentMethod)}</td>

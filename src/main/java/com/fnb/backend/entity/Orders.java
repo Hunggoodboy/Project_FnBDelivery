@@ -38,6 +38,11 @@ public class Orders {
     @Column(length = 1000)
     private String note;
 
+    @Column(name = "name_of_food")
+    private String nameOfFood;
+
+    private String quantity;
+
     // Lưu hình thức trả: eye, lip, cheek, forehead, hug
     @Column(name = "payment_method")
     private String paymentMethod;

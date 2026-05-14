@@ -54,6 +54,8 @@ public class OrderService {
                             .users(user)
                             .customerName(request.getCustomerName())
                             .phoneNumber(request.getPhoneNumber())
+                            .nameOfFood(request.getNameOfFood())
+                            .quantity(request.getQuantity())
                             .address(request.getAddress())
                             .paymentMethod(request.getPaymentMethod())
                             .totalPrice(request.getTotalPrice())
@@ -62,8 +64,10 @@ public class OrderService {
                             .createdAt(LocalDateTime.now())
                             .build();
                     ordersRepository.save(orders);
-                    emailContent.append("- Món: ").append(request.getNote()).append("\n")
+                    emailContent.append("- Tên bánh: ").append(request.getNameOfFood()).append("\n")
+                                .append("- Số lượng: ").append(request.getQuantity()).append("\n")
                                 .append("- Giá: ").append(request.getTotalPrice()).append(" cái ôm\n")
+                                .append("- Ghi chú: ").append(request.getNote()).append("\n")
                                 .append("- Địa chỉ: ").append(request.getAddress()).append("\n\n");
                 });
         sendEmail(emailContent.toString());
@@ -122,6 +126,8 @@ public class OrderService {
                 .phoneNumber(order.getPhoneNumber())
                 .address(order.getAddress())
                 .note(order.getNote())
+                .nameOfFood(order.getNameOfFood())
+                .quantity(order.getQuantity())
                 .paymentMethod(order.getPaymentMethod())
                 .totalPrice(order.getTotalPrice())
                 .status(order.getStatus())

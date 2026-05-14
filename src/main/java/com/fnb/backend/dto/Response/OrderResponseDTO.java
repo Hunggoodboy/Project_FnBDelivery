@@ -15,6 +15,8 @@ public class OrderResponseDTO {
     private Long id;
     private String customerName;
     private String phoneNumber;
+    private String nameOfFood;
+    private String quantity;
     private String address;
     private String note;
     private String paymentMethod;

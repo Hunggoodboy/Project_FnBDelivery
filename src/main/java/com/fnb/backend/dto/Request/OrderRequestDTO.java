@@ -12,6 +12,8 @@ public class OrderRequestDTO {
     // Thông tin nhận bánh
     private String customerName;
     private String phoneNumber;
+    private String nameOfFood;
+    private String quantity;
     private String address;
     private String note;
 
