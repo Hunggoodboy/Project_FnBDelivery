@@ -1,0 +1,16 @@
+# 1. IntelliJ IDEA (Tránh lộ secrets trong workspace.xml)
+.idea/
+*.iml
+out/
+
+# 2. Build Output (Không đẩy file đã biên dịch lên Git)
+target/
+
+# 3. macOS Specific (File rác của hệ điều hành Mac)
+.DS_Store
+
+# 4. Logs (File nhật ký chạy app)
+*.log
+
+# 5. Local Env (Bạn đã có, nhưng thêm dấu / để chắc chắn)
+.env
