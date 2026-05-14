@@ -7,8 +7,11 @@ import com.fnb.backend.entity.Users;
 import com.fnb.backend.repository.OrdersRepository;
 import com.fnb.backend.repository.UsersRepository;
 import com.fnb.backend.utils.SecurityUtils;
-import lombok.AllArgsConstructor;
-import org.springframework.mail.SimpleMailMessage;
+import com.resend.core.exception.ResendException;
+import com.resend.services.emails.model.CreateEmailOptions;
+import com.resend.services.emails.model.CreateEmailResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,14 +22,22 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.fnb.backend.dto.Response.OrderResponseDTO;
+import com.resend.*;
+
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 
 public class OrderService {
     private final OrdersRepository ordersRepository;
     private final UsersRepository usersRepository;
     private final JavaMailSender mailSender;
+
+    @Value("${RESEND_API_KEY}")
+    private String resendApiKey;
+
+    @Value("${USERNAME_EMAIL}")
+    private String myEmail;
 
     @Transactional
     public ApiResponse createOrders(List<OrderRequestDTO> requests) {
@@ -44,7 +55,6 @@ public class OrderService {
                             .customerName(request.getCustomerName())
                             .phoneNumber(request.getPhoneNumber())
                             .address(request.getAddress())
-                            .note(request.getNote())
                             .paymentMethod(request.getPaymentMethod())
                             .totalPrice(request.getTotalPrice())
                             .status("Pending")
@@ -56,20 +66,36 @@ public class OrderService {
                                 .append("- Giá: ").append(request.getTotalPrice()).append(" cái ôm\n")
                                 .append("- Địa chỉ: ").append(request.getAddress()).append("\n\n");
                 });
-        sendEmailNotification("Thông báo đơn hàng mới từ Bakery", emailContent.toString());
+        sendEmail(emailContent.toString());
         return ApiResponse.builder()
                 .success(true)
                           .build();
     }
 
-    private void sendEmailNotification(String subject, String text) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo("email_nhan_thong_bao@gmail.com"); // Email anh muốn nhận thông báo
-        message.setSubject(subject);
-        message.setText(text);
-        mailSender.send(message);
-    }
+    public void sendEmail(String text) {
+        // Cho vào luồng ngầm để web không bị đơ
+        new Thread(() -> {
+            try {
+                Resend resend = new Resend(resendApiKey);
 
+                // Dùng CreateEmailOptions thay vì SendEmailRequest
+                CreateEmailOptions params = CreateEmailOptions.builder()
+                                                              .from("Tiệm Bánh Báo Đơn <onboarding@resend.dev>")
+                                                              .to(myEmail)
+                                                              .text(text)
+                                                              .subject("Đơn hàng mới từ công chúa iu")
+                                                              .html(null)
+                                                              .build();
+
+                // Dùng CreateEmailResponse thay vì SendEmailResponse
+                CreateEmailResponse data = resend.emails().send(params);
+                System.out.println("Đã gửi email thành công! ID: " + data.getId());
+
+            } catch (ResendException e) {
+                System.err.println("Lỗi gửi mail qua Resend: " + e.getMessage());
+            }
+        }).start();
+    }
     public List<OrderResponseDTO> getAllOrders() {
         return ordersRepository.findAllByOrderByCreatedAtDesc()
                 .stream()
