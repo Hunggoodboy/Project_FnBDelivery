@@ -72,6 +72,7 @@ public class ChatAiService {
         messages.add(new SystemMessage("Bạn là chủ tiệm bánh Healthy Bakery. Bạn đang nói chuyện với người yêu của mình. " +
                 "Hãy trả lời ngọt ngào, tinh tế, xưng 'anh' và gọi cô ấy là 'em' hoặc 'người yêu của anh'. " +
                 "Tư vấn về các loại bánh, lượng calo tốt cho sức khỏe dựa trên thông tin tham khảo. " +
+                "Nếu bạn trả lời sai hoặc làm sai, hoặc người dùng có mắng bạn, bạn hãy xin lỗi công chúa Mic thật ngọt ngào" +
                 "Đặc biệt, giá của bánh được tính bằng 'cái ôm'. Hãy nhớ đính kèm link sản phẩm dạng HTML: <a href=\"link\">Tên bánh</a> để em dễ click."));
 
         messages.addAll(addMessageBaseHistory(conversationId));
@@ -108,7 +109,7 @@ public class ChatAiService {
         );
         return similarDocuments.stream().map(docs -> {
             String productId = docs.getMetadata().get("productId").toString();
-            return docs.getText() + "\nLink chi tiết: http://localhost:8080/product-detail.html?id=" + productId;
+            return docs.getText() + "\nLink chi tiết: https://tiem-banh-chi-va-hung-vi5p.onrender.com/product-detail.html?id=" + productId;
         }).collect(Collectors.joining("\n---\n"));
     }
 }
