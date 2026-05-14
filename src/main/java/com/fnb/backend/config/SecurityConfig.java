@@ -12,6 +12,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -44,15 +48,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                // 1. Kích hoạt CORS với cấu hình bên dưới
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**","api/vector/**","/api/chat-ai/**", "/api/products/**", "/api/order/**", "/login.html", "/register.html", "/admin-orders.html", "/css/**", "/js/**", "/assets/**", "/").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/vector/**", "/api/chat-ai/**", "/api/products/**", "/api/order/**", "/login.html", "/register.html", "/admin-orders.html", "/css/**", "/js/**", "/assets/**", "/").permitAll()
                         .anyRequest().authenticated()
                 )
-                .formLogin(form -> form
-                        .loginPage("/login.html")
-                        .permitAll()
-                )
+                .formLogin(form -> form.loginPage("/login.html").permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/api/auth/logout")
                         .logoutSuccessUrl("/login.html")
@@ -60,5 +63,25 @@ public class SecurityConfig {
                 );
 
         return http.build();
+    }
+
+    // 2. Định nghĩa chi tiết cấu hình CORS
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        // QUAN TRỌNG: Thay bằng URL Frontend thật của bạn trên Render/Netlify
+        // Tuyệt đối không dùng "*" nếu muốn dùng Cookie (AllowCredentials)
+        configuration.setAllowedOrigins(Arrays.asList("https://your-frontend-url.onrender.com", "http://localhost:3000"));
+
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
+
+        // Cho phép gửi kèm Cookie/Credentials xuyên domain
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

@@ -34,11 +34,11 @@ public class OrderService {
         if (currentUserId == null) {
             throw new RuntimeException("Anh chin mời công chúa iu đăng nhập đã rui đặt bánh nhéee");
         }
+        Users user = usersRepository.findById(currentUserId)
+                                    .orElseThrow(() -> new RuntimeException("Người dùng chưa đăng ký"));
         StringBuilder emailContent = new StringBuilder("Thông báo: Công chúa vừa đặt đơn hàng mới!\n\n");
         requests.stream()
                 .forEach(request -> {
-                    Users user = usersRepository.findById(currentUserId)
-                                                .orElseThrow(() -> new RuntimeException("Anh chin mời công chúa Trần Lê Khánh Chi iu của anh đăng nhập đã rui đặt bánh nhéee"));
                     Orders orders = Orders.builder()
                             .users(user)
                             .customerName(request.getCustomerName())

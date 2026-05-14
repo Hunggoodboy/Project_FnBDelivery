@@ -2,7 +2,8 @@
 const api = {
     async get(url) {
         try {
-            const response = await fetch(url);
+            // Thêm credentials: 'include' để gửi kèm Cookie
+            const response = await fetch(url, { credentials: 'include' });
             if (!response.ok) throw new Error(`API Error: ${response.status}`);
             return await response.json();
         } catch (error) {
@@ -15,6 +16,7 @@ const api = {
             const response = await fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include', // Thêm dòng này
                 body: JSON.stringify(data)
             });
             if (!response.ok) throw new Error(`API Error: ${response.status}`);

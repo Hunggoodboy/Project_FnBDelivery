@@ -21,15 +21,18 @@ public class OrderController {
     public ResponseEntity<ApiResponse> createOrder(@RequestBody List<OrderRequestDTO> orders){
         try {
             ApiResponse response = orderService.createOrders(orders);
-            System.out.println("Thành công");
             return ResponseEntity.ok(response);
         }
         catch (RuntimeException e){
+            // In ra console để "Anh chin" debug ở IntelliJ
+            e.printStackTrace();
+
             return ResponseEntity.ok(
                     ApiResponse.builder()
-                            .success(false)
-                            .message("Anh chin mời công chúa iu đăng nhập zùi gửi lại đơn giúp anh nhé")
-                            .build());
+                               .success(false)
+                               // Trả về câu thông báo lỗi THẬT từ Service ném ra
+                               .message("Lỗi: " + e.getMessage())
+                               .build());
         }
     }
 

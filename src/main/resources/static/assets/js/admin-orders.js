@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadAllOrders() {
     try {
-        const response = await fetch('/api/order/all');
+        const response = await fetch('/api/order/all', { credentials: 'include' });
         const orders = await response.json();
         renderOrders(orders, 'Danh sách Tất cả Đơn hàng');
     } catch (error) {
