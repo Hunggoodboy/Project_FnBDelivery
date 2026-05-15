@@ -230,6 +230,11 @@ function updateAuthUI() {
                         <i class="fa-solid fa-clipboard-list" style="margin-right: 8px;"></i> Quản lý đơn hàng
                     </a>
                 </li>
+                <li style="border-bottom: 1px solid #eee; margin-bottom: 5px; padding-bottom: 5px;">
+                    <a href="/addProduct.html" style="color: #6ab04c; font-weight: bold;">
+                        <i class="fa-solid fa-plus-circle" style="margin-right: 8px;"></i> Thêm sản phẩm
+                    </a>
+                </li>
             `;
         }
 

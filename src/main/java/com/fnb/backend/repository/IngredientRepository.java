@@ -12,4 +12,6 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
             "JOIN product_ingredient b ON a.id = b.ingredient_id " +
             "WHERE b.product_id = :productId", nativeQuery = true)
     List<String> findIngredientNameByProductId(@Param("productId") long productId);
+
+    java.util.Optional<Ingredient> findByName(String name);
 }

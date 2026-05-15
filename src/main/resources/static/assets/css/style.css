@@ -793,3 +793,117 @@ body {
     height: calc(100vh - 90px); /* Full màn hình trừ đi menu */
     object-fit: cover;
 }
+
+/* --- 8. MOBILE RESPONSIVENESS (SMARTPHONE) --- */
+@media (max-width: 600px) {
+    /* Nav */
+    .nav {
+        height: auto;
+        flex-wrap: wrap;
+        padding: 10px 2%;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .nav .hotline, .nav .find, .nav .Contact {
+        display: none; /* Ẩn bớt các thành phần không quan trọng trên mobile */
+    }
+
+    .nav .brand-logo {
+        width: 100%;
+        justify-content: center;
+        order: -1;
+    }
+
+    .nav .brand-name {
+        font-size: 14px;
+    }
+
+    .nav .favourite, .nav .account {
+        font-size: 13px;
+    }
+
+    /* Hero Slider */
+    .hero-slider img {
+        height: 300px;
+    }
+
+    /* Scroll Area */
+    .scroll-area {
+        padding-top: 120px; /* Thêm padding vì menu 2 hàng */
+        min-height: auto;
+        scroll-snap-align: none; /* Tắt snap trên mobile cho dễ dùng */
+    }
+
+    .scroll-container {
+        scroll-snap-type: none;
+        height: auto;
+        overflow-y: visible;
+    }
+    
+    body {
+        overflow: visible;
+    }
+
+    /* Search Calories Section */
+    .searchCalories .question {
+        font-size: 1.5rem;
+        padding: 0 15px;
+    }
+
+    .searchCalories .typing {
+        font-size: 2.5rem;
+    }
+
+    .ai-chat-box {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    .img-search1, .img-search2, .img-search3, .img-search5 {
+        display: none;
+    }
+
+    .img-search4 {
+        width: 50%;
+        bottom: 5%;
+    }
+
+    /* Product Grid */
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 cột trên mobile */
+        gap: 15px;
+        padding: 10px;
+    }
+
+    .product-title {
+        font-size: 1.8rem;
+    }
+
+    .product-card .product-img {
+        height: 180px;
+        padding: 10px;
+    }
+
+    .product-info h3 {
+        font-size: 0.9rem;
+    }
+
+    .totalPrice {
+        font-size: 1rem !important;
+    }
+
+    /* Dropdown user menu */
+    #user-dropdown {
+        width: 160px !important;
+        right: -10px !important;
+    }
+}
+
+/* Tablet (Small laptops) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .nav .hotline { display: none; }
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

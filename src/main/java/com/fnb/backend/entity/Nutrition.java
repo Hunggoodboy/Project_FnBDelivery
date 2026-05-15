@@ -9,8 +9,8 @@ public class Nutrition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long Id;
-    private int Calories, Protein, Fat, Sugar,Fiber,Carbohydrate;
+    private Long id;
+    private int calories, protein, fat, sugar, fiber, carbohydrate;
     public  Nutrition(){}
     @OneToOne
     @JoinColumn(name = "product_id", unique = true)

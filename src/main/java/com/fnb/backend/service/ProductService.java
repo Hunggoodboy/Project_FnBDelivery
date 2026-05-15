@@ -47,6 +47,39 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    @org.springframework.transaction.annotation.Transactional
+    public Product saveFullProduct(Product product, Nutrition nutrition, List<String> ingredientNames) {
+        // 1. Save Product first to get ID
+        Product savedProduct = productRepository.save(product);
+
+        // 2. Handle Nutrition
+        if (nutrition != null) {
+            nutrition.setProduct(savedProduct);
+            nutritionRepository.save(nutrition);
+            savedProduct.setNutrition(nutrition);
+        }
+
+        // 3. Handle Ingredients
+        if (ingredientNames != null && !ingredientNames.isEmpty()) {
+            java.util.Set<com.fnb.backend.entity.Ingredient> ingredients = ingredientNames.stream()
+                .map(name -> name.trim())
+                .filter(name -> !name.isEmpty())
+                .map(name -> {
+                    return ingredientRepository.findByName(name)
+                        .orElseGet(() -> {
+                            com.fnb.backend.entity.Ingredient newIng = new com.fnb.backend.entity.Ingredient();
+                            newIng.setName(name);
+                            return ingredientRepository.save(newIng);
+                        });
+                })
+                .collect(java.util.stream.Collectors.toSet());
+            savedProduct.setIngredients(ingredients);
+            productRepository.save(savedProduct);
+        }
+
+        return savedProduct;
+    }
+
     public ProductDetailResponse getProductDetail(Long id) {
         Product product = productRepository.findById(id).orElse(null);
 

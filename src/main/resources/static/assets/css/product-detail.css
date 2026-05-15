@@ -280,7 +280,21 @@ footer { background: #111; color: #fff; padding: 60px 0; text-align: center; }
 
 /* --- RESPONSIVE --- */
 @media (max-width: 768px) {
-    .product-hero { flex-direction: column; gap: 30px; }
+    .nav-inner {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .nav-links {
+        gap: 15px;
+        font-size: 0.8rem;
+    }
+    .product-hero { 
+        flex-direction: column; 
+        gap: 30px; 
+        padding: 30px 0;
+    }
     .info-grid { grid-template-columns: 1fr; gap: 40px; }
     .product-title { font-size: 2rem; }
+    .product-gallery img { max-width: 100%; }
+    .action-buttons { flex-direction: column; }
 }

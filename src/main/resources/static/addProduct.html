@@ -1,81 +1,320 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Thêm sản phẩm - Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm sản phẩm mới | FnB Admin</title>
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/premium.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .admin-form-container {
+            max-width: 900px;
+            margin: 100px auto 50px;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .form-header h1 {
+            font-family: 'Playfair Display', serif;
+            color: #000;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .form-section-title {
+            grid-column: 1 / -1;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ff4d6d;
+            border-bottom: 2px solid #ffeef1;
+            padding-bottom: 10px;
+            margin: 20px 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: #fafafa;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #ff4d6d;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(255, 77, 109, 0.1);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            grid-column: 1 / -1;
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 200px;
+            border: 2px dashed #eee;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            overflow: hidden;
+            background: #fdfdfd;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: #ff4d6d;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.2);
+        }
+
+        .submit-btn:hover {
+            background: #c9184a;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(255, 77, 109, 0.3);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #888;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #ff4d6d;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .admin-form-container {
+                margin: 80px 10px 20px;
+                padding: 20px;
+            }
+            .nutrition-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .form-header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
-        <div class="header-container">
-            <a href="/" class="logo">BAKERY. Admin</a>
+        <div id="main">
+            <div class="header">
+                <ul class="nav">
+                    <li class="brand-logo"> 
+                        <a href="/index.html">
+                            <img src="/assets/img/Logo.JPEG" alt="Logo Bakery" class="logo-img" />
+                            <span class="brand-name">Bakery Admin Panel</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </header>
-    <main class="container" style="max-width: 600px; margin: 100px auto;">
-        <div class="form-box">
-            <h1>Thêm sản phẩm mới</h1>
-            <form id="addProductForm">
-                <table cellpadding="10" style="width: 100%;">
-                    <tr>
-                        <td><label>Tên Sản Phẩm:</label></td>
-                        <td><input type="text" id="name" class="form-control" placeholder="Tên Sản Phẩm" required></td>
-                    </tr>
-                    <tr>
-                        <td><label>Mô Tả:</label></td>
-                        <td><input type="text" id="description" class="form-control" placeholder="Mô Tả Sản Phẩm"></td>
-                    </tr>
-                    <tr>
-                        <td><label>Giá:</label></td>
-                        <td><input type="number" id="price" class="form-control" placeholder="Giá tiền" required></td>
-                    </tr>
-                    <tr>
-                        <td><label>Giảm Giá (%)</label></td>
-                        <td><input type="number" id="discount" class="form-control" placeholder="Giảm Giá" value="0"></td>
-                    </tr>
-                    <tr>
-                        <td><label>URL ảnh</label></td>
-                        <td><input type="text" id="imageUrl" class="form-control" placeholder="url" required></td>
-                    </tr>
-                    <tr>
-                        <td><label>Category_ID</label></td>
-                        <td><input type="text" id="categoryId" class="form-control" placeholder="Category_ID" required></td>
-                    </tr>
-                </table>
-                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Lưu Sản Phẩm</button>
+
+    <main>
+        <div class="admin-form-container">
+            <a href="/index.html" class="back-link"><i class="fas fa-arrow-left"></i> Quay lại trang chủ</a>
+            
+            <div class="form-header">
+                <h1>Thêm Sản Phẩm Mới</h1>
+                <p>Nhập đầy đủ thông tin để mang món ngon đến với khách hàng</p>
+            </div>
+
+            <form id="addProductForm" enctype="multipart/form-data">
+                <div class="form-grid">
+                    <!-- Thông tin cơ bản -->
+                    <div class="form-section-title"><i class="fas fa-info-circle"></i> Thông tin cơ bản</div>
+                    
+                    <div class="form-group full-width">
+                        <label for="name">Tên sản phẩm</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Nhập tên bánh..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Giá gốc (VNĐ)</label>
+                        <input type="number" id="price" name="price" class="form-control" placeholder="VD: 50000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="discount">Giảm giá (%)</label>
+                        <input type="number" id="discount" name="discount" class="form-control" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categoryId">Danh mục (ID)</label>
+                        <input type="number" id="categoryId" name="categoryId" class="form-control" value="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image">Ảnh sản phẩm</label>
+                        <input type="file" id="image" name="image" class="form-control" accept="image/*" onchange="previewImage(this)">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <div class="image-preview" id="imagePreview">
+                            <span style="color: #ccc;">Xem trước ảnh tại đây</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="description">Mô tả sản phẩm</label>
+                        <textarea id="description" name="description" class="form-control" placeholder="Viết mô tả chi tiết về bánh..."></textarea>
+                    </div>
+
+                    <!-- Thành phần -->
+                    <div class="form-section-title"><i class="fas fa-leaf"></i> Thành phần</div>
+                    <div class="form-group full-width">
+                        <label for="ingredients">Danh sách thành phần (Cách nhau bằng dấu phẩy)</label>
+                        <textarea id="ingredients" name="ingredients" class="form-control" placeholder="VD: Bột mì, Trứng, Sữa, Đường ăn kiêng..."></textarea>
+                    </div>
+
+                    <!-- Dinh dưỡng -->
+                    <div class="form-section-title"><i class="fas fa-chart-pie"></i> Thông tin dinh dưỡng (trên 100g)</div>
+                    <div class="nutrition-grid">
+                        <div class="form-group">
+                            <label>Calories (kcal)</label>
+                            <input type="number" id="calories" name="calories" class="form-control" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Protein (g)</label>
+                            <input type="number" id="protein" name="protein" class="form-control" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Fat (g)</label>
+                            <input type="number" id="fat" name="fat" class="form-control" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Sugar (g)</label>
+                            <input type="number" id="sugar" name="sugar" class="form-control" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Fiber (g)</label>
+                            <input type="number" id="fiber" name="fiber" class="form-control" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Carb (g)</label>
+                            <input type="number" id="carbohydrate" name="carbohydrate" class="form-control" value="0">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">Lưu sản phẩm ngay</button>
             </form>
         </div>
     </main>
 
-<script>
-document.getElementById('addProductForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const data = {
-        name: document.getElementById('name').value,
-        description: document.getElementById('description').value,
-        price: parseFloat(document.getElementById('price').value),
-        discount: parseFloat(document.getElementById('discount').value),
-        imageUrl: document.getElementById('imageUrl').value,
-        categoryId: document.getElementById('categoryId').value
-    };
-
-    try {
-        const response = await fetch('/api/products/save', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-
-        if (response.ok) {
-            alert('Lưu sản phẩm thành công!');
-            window.location.href = '/index.html';
-        } else {
-            alert('Thất bại: ' + await response.text());
+    <script>
+        function previewImage(input) {
+            const preview = document.getElementById('imagePreview');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                }
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.innerHTML = `<span style="color: #ccc;">Xem trước ảnh tại đây</span>`;
+            }
         }
-    } catch (err) {
-        alert('Lỗi: ' + err.message);
-    }
-});
-</script>
+
+        document.getElementById('addProductForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang lưu...';
+
+            const formData = new FormData(e.target);
+
+            try {
+                const response = await fetch('/api/products/save', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alert('Chúc mừng! Sản phẩm đã được thêm thành công.');
+                    window.location.href = '/index.html';
+                } else {
+                    const error = await response.text();
+                    alert('Có lỗi xảy ra: ' + error);
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Lỗi kết nối server: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Lưu sản phẩm ngay';
+            }
+        });
+    </script>
 </body>
 </html>
