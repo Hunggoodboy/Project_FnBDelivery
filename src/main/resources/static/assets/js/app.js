@@ -34,6 +34,11 @@ const state = {
     products: []
 };
 
+function toggleMobileMenu() {
+    const navs = document.querySelectorAll('.nav, .nav-links');
+    navs.forEach(nav => nav.classList.toggle('active'));
+}
+
 // Initialization
 document.addEventListener('DOMContentLoaded', async () => {
     injectCartHTML();

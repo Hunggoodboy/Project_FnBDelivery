@@ -178,3 +178,32 @@ body::after { bottom: 15%; right: 10%; animation-delay: -2s; }
     0% { transform: translateY(0) rotate(0); opacity: 0.15; }
     100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
 }
+
+/* --- MOBILE RESPONSIVE --- */
+@media (max-width: 500px) {
+    body {
+        padding: 20px;
+        overflow: auto; /* Cho phép cuộn nếu cần */
+        align-items: flex-start; /* Để bàn phím không che mất form */
+    }
+    
+    .container {
+        width: 100%;
+        padding: 30px 20px;
+        border-radius: 20px;
+    }
+
+    .form-box h2 {
+        font-size: 1.5rem;
+    }
+
+    .input-group input {
+        padding: 12px 12px 12px 40px;
+        font-size: 14px;
+    }
+
+    .btn {
+        height: 50px;
+        font-size: 16px;
+    }
+}

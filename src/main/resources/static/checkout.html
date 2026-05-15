@@ -2,6 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thanh Toán Tình Cảm - Bakery</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <style>
@@ -108,8 +109,13 @@
 
         /* --- RESPONSIVE --- */
         @media (max-width: 850px) {
-            .checkout-grid { grid-template-columns: 1fr; }
-            .summary-section { position: static; }
+            body { padding: 10px 0; }
+            .checkout-grid { grid-template-columns: 1fr; gap: 20px; }
+            .summary-section { position: static; padding: 20px; }
+            .form-section { padding: 25px 20px; }
+            .section-title { font-size: 1.5rem; }
+            .item-img { width: 50px; height: 50px; }
+            .final-price { font-size: 1.2rem; }
         }
     </style>
 </head>

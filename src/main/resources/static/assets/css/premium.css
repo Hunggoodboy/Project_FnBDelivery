@@ -205,9 +205,19 @@
     height: 45px;
     object-fit: cover;
     border-radius: 50%; /* Bo tròn logo */
-    border: 2px solid #ff4d6d; /* Viền màu hồng lãng mạn */
+    border: 2px solid #ff4d6d;
     box-shadow: 0 4px 10px rgba(255, 77, 109, 0.2);
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@media (max-width: 600px) {
+    .logo-img {
+        width: 35px;
+        height: 35px;
+    }
+    .brand-name {
+        font-size: 1.1rem;
+    }
 }
 
 /* Định dạng Tên Thương Hiệu */

@@ -16,15 +16,36 @@ ul { list-style: none; }
 /* --- 1. NAVIGATION BAR --- */
 header {
     background: #fff;
-    padding: 20px 0;
+    padding: 10px 0;
     position: sticky;
     top: 0;
     z-index: 100;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
+.brand-logo a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ff4d6d;
+    white-space: nowrap;
+}
+
+.logo-img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 .nav-inner { display: flex; justify-content: space-between; align-items: center; }
 .logo { font-size: 1.5rem; font-weight: bold; letter-spacing: 1px; }
+.mobile-menu-btn { display: none; }
 .nav-links { display: flex; gap: 30px; }
 .nav-links a { font-weight: 500; font-size: 0.95rem; }
 .cart-icon { font-weight: bold; cursor: pointer; }
@@ -280,14 +301,72 @@ footer { background: #111; color: #fff; padding: 60px 0; text-align: center; }
 
 /* --- RESPONSIVE --- */
 @media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        color: #ff4d6d;
+        cursor: pointer;
+        z-index: 1001;
+        order: 3; /* Hamburger ở cuối bên phải */
+    }
+
     .nav-inner {
-        flex-direction: column;
-        gap: 15px;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 15px 20px;
+        position: relative;
     }
+
+    .brand-logo {
+        order: 1; /* Logo ở đầu bên trái */
+    }
+
+    .cart-icon {
+        order: 2; /* Cart ở giữa (hoặc cạnh hamburger) */
+        font-size: 0.9rem;
+        margin-left: auto;
+        margin-right: 15px;
+    }
+
     .nav-links {
-        gap: 15px;
-        font-size: 0.8rem;
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        right: 0;
+        width: 240px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 15px 0;
+        box-shadow: -10px 10px 30px rgba(255, 77, 109, 0.1);
+        z-index: 1000;
+        border-radius: 0 0 0 30px;
+        border-left: 1px solid rgba(255, 77, 109, 0.1);
+        border-bottom: 1px solid rgba(255, 77, 109, 0.1);
+        animation: slideInRight 0.3s ease-out;
     }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links a {
+        font-size: 15px;
+        font-weight: 600;
+        padding: 18px 30px;
+        color: #333;
+        text-align: right;
+        width: 100%;
+        transition: all 0.2s;
+    }
+    
+    .nav-links a:hover {
+        background: rgba(255, 77, 109, 0.05);
+        color: #ff4d6d;
+    }
+    
     .product-hero { 
         flex-direction: column; 
         gap: 30px; 

@@ -2,6 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đặt hàng thành công!</title>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
@@ -17,18 +18,24 @@
             text-align: center;
             padding: 20px;
         }
-        h1 { font-family: 'Comfortaa', cursive; color: #ff4d6d; font-size: 2.5rem; margin-bottom: 20px; }
-        p { font-size: 1.2rem; color: #333; margin-bottom: 40px; line-height: 1.6; }
+        h1 { font-family: 'Comfortaa', cursive; color: #ff4d6d; font-size: 2.2rem; margin-bottom: 20px; }
+        p { font-size: 1.1rem; color: #333; margin-bottom: 30px; line-height: 1.6; }
 
-        .btn-zone { position: relative; width: 100%; max-width: 600px; height: 100px; }
+        .btn-zone { position: relative; width: 100%; max-width: 600px; height: 120px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
 
-        .btn { padding: 15px 40px; font-size: 1.2rem; font-weight: bold; border: none; border-radius: 50px; cursor: pointer; transition: 0.2s; position: absolute; }
+        .btn { padding: 15px 30px; font-size: 1.1rem; font-weight: bold; border: none; border-radius: 50px; cursor: pointer; transition: 0.2s; width: 100%; max-width: 250px; }
 
-        .btn-love { background: #ff4d6d; color: white; left: 20%; }
-        .btn-hate { background: #636e72; color: white; right: 20%; }
+        .btn-love { background: #ff4d6d; color: white; position: static; }
+        .btn-hate { background: #636e72; color: white; position: static; }
 
         .heart { position: absolute; color: #ff4d6d; font-size: 2rem; animation: float 3s infinite; opacity: 0.5; }
         @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0); } }
+
+        @media (max-width: 500px) {
+            h1 { font-size: 1.8rem; }
+            p { font-size: 1rem; }
+            .btn { font-size: 1rem; padding: 12px 20px; }
+        }
     </style>
 </head>
 <body>

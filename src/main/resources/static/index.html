@@ -6,23 +6,28 @@
     <title>FnB Delivery | Healthy Foods</title>
     <link rel="stylesheet" href="/assets/css/style.css" />
     <link rel="stylesheet" href="/assets/css/cart.css" />
-    <link rel="stylesheet" href="/assets/css/premium.css" /> <!-- I'll use premium.css for overrides -->
+    <link rel="stylesheet" href="/assets/css/premium.css" /> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 <header>
     <div id="main">
         <div class="header">
-            <ul class="nav">
+            <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="brand-logo"> 
+                <a href="/index.html">
+                    <img src="/assets/img/Logo.JPEG" alt="Logo Bakery" class="logo-img" onclick="openLogoModal(event)" />
+                    <span class="brand-name">Tiệm bánh của Chì và Hung</span>
+                </a>
+            </div>
+            <ul class="nav" id="mainNav">
                 <li class="hotline">
                     <a href="tel:0966439277">
                         <img src="/assets/icon/phone-call.png" alt="Phone Call" class="phone-icon" />
                         <span class='sdt'>Hotline: 0966439277 </span>
                     </a>
-                </li>
-                <li class="brand-logo"> <a href="/index.html">
-                    <img src="/assets/img/Logo.JPEG" alt="Logo Bakery" class="logo-img" onclick="openLogoModal(event)" />
-                    <span class="brand-name">Tiệm bánh của Chì và Hung</span>
-                </a>
                 </li>
                 <li class="find">
                     <img src="/assets/icon/find.png" alt="Find" class="find-icon" />
