@@ -69,18 +69,31 @@ function togglePassword(id, icon) {
 
 document.getElementById('registerForm').addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    // 1. Lấy phần tử nút Submit và lưu lại text gốc
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerText;
+
     const username = document.getElementById('username').value;
     const phone_number = document.getElementById('phone_number').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
 
+    const errorEl = document.getElementById('error-msg');
+    errorEl.style.display = 'none'; // Ẩn thông báo lỗi cũ đi mỗi lần bấm mới
+
     if (password !== confirmPassword) {
-        const errorEl = document.getElementById('error-msg');
         errorEl.style.display = 'block';
         errorEl.querySelector('span').innerText = 'Mật khẩu nhập lại không khớp!';
         return;
     }
+
+    // 2. KHÓA NÚT NGAY LẬP TỨC TRƯỚC KHI GỌI API
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'Đang xử lý...';
+    submitBtn.style.opacity = '0.7';
+    submitBtn.style.cursor = 'not-allowed';
 
     try {
         const response = await fetch('/api/auth/register', {
@@ -92,14 +105,26 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
         if (response.ok) {
             alert('Đăng ký thành công!');
             window.location.href = '/login.html';
+            // Thành công thì chuyển trang, không cần mở khóa nút lại
         } else {
             const error = await response.text();
-            const errorEl = document.getElementById('error-msg');
             errorEl.style.display = 'block';
             errorEl.querySelector('span').innerText = error;
+
+            // 3. MỞ KHÓA LẠI NÚT VÌ CÓ LỖI (Trùng email, sai định dạng...)
+            submitBtn.disabled = false;
+            submitBtn.innerText = originalBtnText;
+            submitBtn.style.opacity = '1';
+            submitBtn.style.cursor = 'pointer';
         }
     } catch (err) {
         alert('Đã xảy ra lỗi: ' + err.message);
+
+        // 4. MỞ KHÓA LẠI NÚT NẾU LỖI MẠNG (Server sập, rớt mạng...)
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalBtnText;
+        submitBtn.style.opacity = '1';
+        submitBtn.style.cursor = 'pointer';
     }
 });
 </script>
