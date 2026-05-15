@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yêu cầu món mới | FnB Delivery</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/cart.css">
+    <link rel="stylesheet" href="/assets/css/premium.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .favourite-container {
+            max-width: 600px;
+            margin: 120px auto 50px;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.1);
+            text-align: center;
+        }
+
+        .favourite-header h1 {
+            color: #ff4d6d;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .favourite-header p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .favourite-form {
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input, 
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ffeef1;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: #fffcfd;
+        }
+
+        .form-group input:focus, 
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #ff4d6d;
+            box-shadow: 0 0 0 3px rgba(255, 77, 109, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: #ff4d6d;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #ff758f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
+        }
+
+        .success-message {
+            display: none;
+            background: #f0fff4;
+            color: #2f855a;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 1px solid #c6f6d5;
+        }
+
+        .heart-decoration {
+            color: #ff4d6d;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="main">
+            <div class="header">
+                <ul class="nav">
+                    <li class="hotline">
+                        <a href="tel:0966439277">
+                            <img src="/assets/icon/phone-call.png" alt="Phone Call" class="phone-icon" />
+                            <span class='sdt'>Hotline: 0966439277 </span>
+                        </a>
+                    </li>
+                    <li class="brand-logo"> 
+                        <a href="/index.html">
+                            <img src="/assets/img/Logo.JPEG" alt="Logo Bakery" class="logo-img" />
+                            <span class="brand-name">Tiệm bánh của Chì và Hung</span>
+                        </a>
+                    </li>
+                    <li class="favourite">
+                        <a href="/favourite.html" style="color: #ff4d6d;">
+                            <img src="/assets/icon/heart.png" alt="Favourite" class="favourite-icon" style="width: 20px; height: 20px; object-fit: contain;" />
+                            Yêu cầu món mới
+                        </a>
+                    </li>
+                    <li class="account" id="auth-section">
+                        <a href="/login.html">
+                            <img src="/assets/icon/user.png" alt="Account" class="account-icon" />
+                            Tài Khoản
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="favourite-container">
+            <div class="heart-decoration">💖</div>
+            <div class="favourite-header">
+                <h1>Yêu Cầu Món Mới</h1>
+                <p>Công chúa mún ăn món gì cứ nói với anh, anh sẽ làm cho em nhen!</p>
+            </div>
+
+            <form id="favouriteForm" class="favourite-form">
+                <div class="form-group">
+                    <label for="product">Tên món em mún ăn:</label>
+                    <input type="text" id="product" name="product" placeholder="VD: Bánh mì hoa cúc healthy..." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="type">Loại món:</label>
+                    <select id="type" name="type" required>
+                        <option value="" disabled selected>Chọn loại món nè...</option>
+                        <option value="Cake">Bánh ngọt</option>
+                        <option value="Drink">Đồ uống</option>
+                        <option value="Snack">Đồ ăn vặt</option>
+                        <option value="Other">Món khác</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="note">Lời nhắn cho anh:</label>
+                    <textarea id="note" name="note" rows="4" placeholder="Em mún ít đường hay thêm gì thì viết vào đây nha..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Gửi yêu cầu cho anh ❤️</button>
+            </form>
+
+            <div id="successMessage" class="success-message">
+                <h3>Gửi yêu cầu thành công rùi nè!</h3>
+                <p>Anh đã nhận được rùi, chờ anh một chút xíu anh làm cho em nhen công chúa iu ❤️</p>
+                <button class="submit-btn" style="background: #2f855a; margin-top: 15px;" onclick="window.location.href='/index.html'">Quay lại trang chủ</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="/assets/js/app.js?v=3"></script>
+    <script src="/assets/js/favourite.js"></script>
+</body>
+</html>

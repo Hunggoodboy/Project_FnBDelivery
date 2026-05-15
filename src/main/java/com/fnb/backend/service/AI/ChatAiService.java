@@ -1,13 +1,17 @@
 package com.fnb.backend.service.AI;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.*;
 import org.springframework.ai.document.Document;
+import org.springframework.ai.openai.OpenAiChatOptions;
+import org.springframework.ai.retry.TransientAiException;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import com.fnb.backend.dto.Request.ChatAIRequest; // Bạn cần tạo DTO này
-import com.fnb.backend.dto.Response.ChatAIResponse; // Bạn cần tạo DTO này
+import com.fnb.backend.dto.Request.ChatAIRequest;
+import com.fnb.backend.dto.Response.ChatAIResponse;
 import com.fnb.backend.entity.ChatAiHistory;
 import com.fnb.backend.entity.Users;
 import com.fnb.backend.repository.ChatAiHistoryRepository;
@@ -20,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class ChatAiService {
 
@@ -28,9 +33,16 @@ public class ChatAiService {
     private final ChatAiHistoryRepository chatAiHistoryRepository;
     private final UsersRepository usersRepository;
 
-    public ChatAiService(ChatClient.Builder chatClient, VectorStore vectorStore, ChatAiHistoryRepository chatAiHistoryRepository, UsersRepository usersRepository) {
+    @Value("${app.ai.primary-model}")
+    private String primaryModel;
+
+    @Value("${app.ai.fallback-model}")
+    private String fallbackModel;
+
+    public ChatAiService(ChatClient.Builder chatClient, VectorStore vectorStore,
+                         ChatAiHistoryRepository chatAiHistoryRepository, UsersRepository usersRepository) {
         this.chatClient = chatClient
-                // .defaultToolNames("addToCartAiTool") // Mở cái này nếu có Tool config
+                 .defaultToolNames("createNewFavouriteRequest", "createNewOrderRequest")
                 .build();
         this.vectorStore = vectorStore;
         this.chatAiHistoryRepository = chatAiHistoryRepository;
@@ -50,10 +62,7 @@ public class ChatAiService {
         String currentQuestionWithRag = "Câu hỏi: " + chatAIRequest.getQuestion() +
                 "\nThông tin tham khảo từ cửa hàng: \n" + ragContext;
 
-        String answer = chatClient.prompt()
-                                  .messages(getListMessages(thisConversationId, currentQuestionWithRag))
-                                  .call()
-                                  .content();
+        String answer = callWithFallback(getListMessages(thisConversationId, currentQuestionWithRag));
 
         // Lưu lịch sử
         chatAiHistoryRepository.save(ChatAiHistory.builder()
@@ -65,6 +74,24 @@ public class ChatAiService {
                                                   .user(currentUser).createdAt(LocalDateTime.now()).build());
 
         return ChatAIResponse.builder().answer(answer).build();
+    }
+
+    // ✅ Gọi primary model, nếu 503 tự động chuyển sang fallback
+    private String callWithFallback(List<Message> messages) {
+        try {
+            return chatClient.prompt()
+                             .options(OpenAiChatOptions.builder().model(primaryModel).build())
+                             .messages(messages)
+                             .call()
+                             .content();
+        } catch (TransientAiException e) {
+            log.warn("⚠️ Model {} quá tải (503), chuyển sang fallback: {}", primaryModel, fallbackModel);
+            return chatClient.prompt()
+                             .options(OpenAiChatOptions.builder().model(fallbackModel).build())
+                             .messages(messages)
+                             .call()
+                             .content();
+        }
     }
 
     private List<Message> getListMessages(String conversationId, String currentQuestionWithRag) {
@@ -89,7 +116,17 @@ public class ChatAiService {
         rewriteMessages.addAll(history);
         rewriteMessages.add(new UserMessage("Câu cần viết lại: " + question));
 
-        return chatClient.prompt().messages(rewriteMessages).call().content();
+        try {
+            return chatClient.prompt()
+                             .options(OpenAiChatOptions.builder().model(primaryModel).build())
+                             .messages(rewriteMessages)
+                             .call()
+                             .content();
+        } catch (TransientAiException e) {
+            // rewrite lỗi thì trả câu gốc, không block user
+            log.warn("⚠️ rewriteQuestion thất bại, dùng câu hỏi gốc");
+            return question;
+        }
     }
 
     private List<Message> addMessageBaseHistory(String conversationId) {

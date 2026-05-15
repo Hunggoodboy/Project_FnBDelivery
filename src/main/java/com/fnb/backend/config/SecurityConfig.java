@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/vector/**", "/api/chat-ai/**", "/api/products/**", "/api/order/**", "/login.html", "/register.html", "/admin-orders.html", "/css/**", "/js/**", "/assets/**", "/").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/vector/**","/api/favourites/**", "/api/chat-ai/**", "/api/products/**", "/api/order/**", "/login.html", "/register.html", "/admin-orders.html", "/css/**", "/js/**", "/assets/**", "/").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form.loginPage("/login.html").permitAll())
