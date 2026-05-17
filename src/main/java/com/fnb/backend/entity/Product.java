@@ -4,6 +4,7 @@ package com.fnb.backend.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.thymeleaf.context.ILazyContextVariable;
@@ -37,6 +38,7 @@ public class Product {
     }
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
     @JoinTable(
             name = "product_ingredient",
             joinColumns = @JoinColumn(name = "product_id"),
@@ -46,6 +48,7 @@ public class Product {
     public Product() {}
 
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
     private Nutrition nutrition;
 
 }

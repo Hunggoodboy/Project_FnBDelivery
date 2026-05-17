@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="/assets/css/premium.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        html, body {
+            overflow-y: auto !important;
+            height: auto !important;
+        }
         .admin-form-container {
             max-width: 900px;
             margin: 100px auto 50px;
@@ -293,10 +297,62 @@
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang lưu...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang tải ảnh & lưu...';
 
+            const fileInput = document.getElementById('image');
+            const file = fileInput.files[0];
+            let imageUrl = "";
+
+            const CLOUD_NAME = "dhoj2nuhf";
+            const UPLOAD_PRESET = "mL_default1"; // Lấy chính xác từ ảnh cấu hình của bạn
+
+            if (file) {
+                const cloudinaryData = new FormData();
+                cloudinaryData.append('file', file);
+                cloudinaryData.append('upload_preset', UPLOAD_PRESET);
+
+                if (file) {
+                    const cloudinaryData = new FormData();
+                    cloudinaryData.append('file', file);
+                    cloudinaryData.append('upload_preset', UPLOAD_PRESET);
+
+                    try {
+                        const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+                            method: 'POST',
+                            body: cloudinaryData
+                        });
+
+                        // Đọc dữ liệu trả về từ Cloudinary trước để lấy thông tin lỗi
+                        const cloudJson = await cloudRes.json();
+
+                        if (!cloudRes.ok) {
+                            // Nếu lỗi, lấy đúng tin nhắn lỗi mà Cloudinary trả về
+                            throw new Error(cloudJson.error ? cloudJson.error.message : 'Lỗi không xác định');
+                        }
+
+                        imageUrl = cloudJson.secure_url;
+
+                    } catch (err) {
+                        // Hiện lỗi thật sự ở đây
+                        alert('Lỗi từ Cloudinary: ' + err.message);
+                        btn.disabled = false;
+                        btn.innerHTML = 'Lưu sản phẩm ngay';
+                        return;
+                    }
+                }
+            }
+
+            // 3. Chuẩn bị dữ liệu gửi về Server Backend của bạn
             const formData = new FormData(e.target);
 
+            if (imageUrl) {
+                // Xóa file binary (file thô) để tránh làm nặng băng thông về server của bạn
+                formData.delete('image');
+                // Thay thế bằng chuỗi URL String của Cloudinary để lưu trực tiếp vào Database
+                formData.append('image', imageUrl);
+            }
+
+            // 4. Gửi toàn bộ dữ liệu (đã có link ảnh) sang API hiện tại
             try {
                 const response = await fetch('/api/products/save', {
                     method: 'POST',
@@ -308,7 +364,7 @@
                     window.location.href = '/index.html';
                 } else {
                     const error = await response.text();
-                    alert('Có lỗi xảy ra: ' + error);
+                    alert('Có lỗi xảy ra tại Server: ' + error);
                 }
             } catch (err) {
                 console.error(err);

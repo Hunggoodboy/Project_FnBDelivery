@@ -43,7 +43,7 @@ public class ProductController {
             @RequestParam("price") long price,
             @RequestParam("discount") long discount,
             @RequestParam("categoryId") int categoryId,
-            @RequestParam(value = "image", required = false) MultipartFile image,
+            @RequestParam(value = "image", required = false)  String image,
             @RequestParam(value = "calories", defaultValue = "0") int calories,
             @RequestParam(value = "protein", defaultValue = "0") int protein,
             @RequestParam(value = "fat", defaultValue = "0") int fat,
@@ -61,21 +61,7 @@ public class ProductController {
 
             // Handle Image Upload
             if (image != null && !image.isEmpty()) {
-                String fileName = StringUtils.cleanPath(image.getOriginalFilename());
-                String uploadDir = "src/main/resources/static/assets/img/";
-                Path uploadPath = Paths.get(uploadDir);
-                
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
-                }
-
-                try (InputStream inputStream = image.getInputStream()) {
-                    Path filePath = uploadPath.resolve(fileName);
-                    Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-                    product.setImageUrl("/assets/img/" + fileName);
-                } catch (IOException ioe) {
-                    throw new IOException("Could not save image file: " + fileName, ioe);
-                }
+                product.setImageUrl(image);
             }
 
             // Handle Nutrition
