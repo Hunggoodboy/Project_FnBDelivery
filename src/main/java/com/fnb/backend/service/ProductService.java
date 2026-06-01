@@ -2,13 +2,19 @@ package com.fnb.backend.service;
 
 
 import com.fnb.backend.dto.ProductInfoDto;
+import com.fnb.backend.dto.Request.FeedBackRequest;
+import com.fnb.backend.dto.Response.ApiResponse;
+import com.fnb.backend.dto.Response.FeedBackResponse;
 import com.fnb.backend.dto.Response.ProductDetailResponse;
 import com.fnb.backend.dto.Response.ProductSummaryResponse;
+import com.fnb.backend.entity.FeedBack;
 import com.fnb.backend.entity.Nutrition;
 import com.fnb.backend.entity.Product;
+import com.fnb.backend.repository.FeedBackRepository;
 import com.fnb.backend.repository.IngredientRepository;
 import com.fnb.backend.repository.NutritionRepository;
 import com.fnb.backend.repository.ProductRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,16 +22,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private NutritionRepository nutritionRepository;
-
-    @Autowired
-    private IngredientRepository ingredientRepository;
+    private final ProductRepository productRepository;
+    private final NutritionRepository nutritionRepository;
+    private final IngredientRepository ingredientRepository;
+    private final FeedBackRepository feedBackRepository;
 
     public List<ProductSummaryResponse> getAllProducts() {
         List<Product> products = productRepository.findAll();

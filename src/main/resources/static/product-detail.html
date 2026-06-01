@@ -56,12 +56,61 @@
 </section>
 
 <section class="container reviews-section">
-    <h3 class="section-title">Khách hàng nói gì?</h3>
-<!--    <div class="review-card">-->
-<!--        <div class="stars">★★★★★</div>-->
-<!--        <p>"Bánh rất ngon, không bị ngọt gắt. Socola chip nhiều, ăn rất đã miệng. Sẽ ủng hộ shop dài dài."</p>-->
-<!--        <div class="reviewer-name">- Nguyễn Thùy Linh</div>-->
-<!--    </div>-->
+    <h3 class="section-title">Đánh giá từ công chúa mic iuu</h3>
+    
+    <!-- Danh sách feedback động -->
+    <div id="feedback-list-container" class="feedback-list">
+        <p class="no-feedback"><i class="fa-regular fa-comment-dots"></i> Chưa có đánh giá nào cho sản phẩm này. Công chúa hãy đánh giá sản phẩm này nhée</p>
+    </div>
+
+    <!-- Form viết/sửa feedback -->
+    <div class="feedback-form-container glass-panel">
+        <h4 id="feedback-form-title" class="form-title">Để lại đánh giá của công túaaa</h4>
+        <p class="form-subtitle">Chia sẻ trải nghiệm ngọt ngào của công chúa về món ăng này nhé!</p>
+        
+        <form id="feedback-form" class="feedback-form">
+            <input type="hidden" id="edit-feedback-id" value="">
+            
+            <div class="form-row">
+                <div class="rating-group">
+                    <label>Đánh giá của bạn:</label>
+                    <div class="star-rating-widget" id="star-rating-selector">
+                        <i class="fa-regular fa-star" data-rating="1"></i>
+                        <i class="fa-regular fa-star" data-rating="2"></i>
+                        <i class="fa-regular fa-star" data-rating="3"></i>
+                        <i class="fa-regular fa-star" data-rating="4"></i>
+                        <i class="fa-regular fa-star" data-rating="5"></i>
+                    </div>
+                    <input type="hidden" id="feedback-star-value" value="5" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label for="feedback-content">Nhận xét:</label>
+                <textarea id="feedback-content" class="form-control" rows="4" placeholder="Công chúa iu của anh thí đồ ăng hum nay anh chuẩn bị thía nèo ạ, công chúa chia sẻ choa anh cùng bít nhée" required></textarea>
+            </div>
+
+            <div class="form-row">
+                <label>Hình ảnh thực tế (không bắt buộc):</label>
+                <div class="upload-wrapper">
+                    <label for="feedback-image-file" class="custom-file-upload">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Công chúa iu của anh chọn ảnh chụp đồ ăng ở ây nhée
+                    </label>
+                    <input type="file" id="feedback-image-file" accept="image/*" style="display: none;" onchange="previewFeedbackImage(this)">
+                    <input type="hidden" id="feedback-image-url" value="">
+                </div>
+                
+                <div class="feedback-image-preview-container" id="feedback-image-preview">
+                    <span class="preview-placeholder">Xem trước ảnh tại đây</span>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" id="btn-cancel-edit" class="btn btn-cancel" style="display: none;" onclick="cancelEditFeedback()">Hủy sửa</button>
+                <button type="submit" id="btn-submit-feedback" class="btn btn-submit">Gửi Đánh Giá Ngay <i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </form>
+    </div>
 </section>
 
 <section class="related-products">
@@ -82,5 +131,6 @@
 </footer>
 
 <script src="/assets/js/app.js"></script>
+<script src="/assets/js/feedback.js"></script>
 </body>
 </html>

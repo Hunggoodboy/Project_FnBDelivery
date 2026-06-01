@@ -5,6 +5,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.fnb.backend.entity.Product;
 import com.fnb.backend.repository.ProductRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -13,11 +14,12 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
-@Component
+//@Component
+@AllArgsConstructor
 public class CloudinaryMigration implements CommandLineRunner {
 
-    @Autowired
-    private ProductRepository productRepository;
+
+    private final ProductRepository productRepository;
 
     @Value("${cloudinary.cloud-name}")
     private String cloudName;

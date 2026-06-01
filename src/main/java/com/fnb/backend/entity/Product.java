@@ -51,4 +51,8 @@ public class Product {
     @EqualsAndHashCode.Exclude
     private Nutrition nutrition;
 
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
+    private List<FeedBack> feedBacks;
+
 }
