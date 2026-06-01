@@ -18,7 +18,9 @@ public class FeedBack {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(columnDefinition = "TEXT")
     private String content;
+    @Column(length = 1000)
     private String image;
     private float star;
     private LocalDateTime createTime;
