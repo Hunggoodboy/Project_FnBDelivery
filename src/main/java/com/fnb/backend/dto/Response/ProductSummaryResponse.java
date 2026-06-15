@@ -22,4 +22,5 @@ public class ProductSummaryResponse {
     
     private long price;
     private long discount;
+    private int categoryId;
 }

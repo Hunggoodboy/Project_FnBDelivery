@@ -341,26 +341,43 @@ function renderProducts(products) {
         return;
     }
 
-    grid.innerHTML = products.map(p => {
-        const price = p.price || 0;
-        const discount = p.discount || 0;
-        const finalPrice = price - (price * discount / 100);
-        const img = p.image_url || '/assets/img/default-cake.png';
+    const banh = products.filter(p => p.categoryId == 1 || p.category_id == 1);
+    const doAn = products.filter(p => p.categoryId == 2 || p.category_id == 2);
+    const doUong = products.filter(p => p.categoryId == 3 || p.category_id == 3);
 
-        return `
-            <a href="/product-detail.html?id=${p.id}" class="product-card">
-                <div class="product-img"><img src="${img}" alt="${p.name}" /></div>
-                <div class="product-info">
-                    <h3>${p.name}</h3>
-                    <div class="price-box">
-                        <p class="price">Gía gốc: <span>${new Intl.NumberFormat('vi-VN').format(price)}</span> cái chơm và ôm</p>
-                        <p class="discount">Giảm giá : <span>${discount}</span>%</p>
-                        <p class="totalPrice">Giá tiền: <span>${new Intl.NumberFormat('vi-VN').format(finalPrice)} cái chơm và ôm</span></p>
+    let html = '';
+
+    const createGrid = (title, items) => {
+        if (!items || items.length === 0) return '';
+        let gridHtml = `<h3 style="grid-column: 1/-1; text-align: left; width: 100%; margin: 40px 0 20px; font-size: 2rem; color: #ff4d6d; border-bottom: 3px solid #ffeef1; padding-bottom: 10px;"><i class="fa-solid fa-star" style="font-size: 1.5rem; margin-right: 10px;"></i>${title}</h3>`;
+        gridHtml += items.map(p => {
+            const price = p.price || 0;
+            const discount = p.discount || 0;
+            const finalPrice = price - (price * discount / 100);
+            const img = p.imageUrl || p.image_url || '/assets/img/default-cake.png';
+
+            return `
+                <a href="/product-detail.html?id=${p.id}" class="product-card">
+                    <div class="product-img"><img src="${img}" alt="${p.name}" /></div>
+                    <div class="product-info">
+                        <h3>${p.name}</h3>
+                        <div class="price-box">
+                            <p class="price">Gía gốc: <span>${new Intl.NumberFormat('vi-VN').format(price)}</span> cái chơm và ôm</p>
+                            <p class="discount">Giảm giá : <span>${discount}</span>%</p>
+                            <p class="totalPrice">Giá tiền: <span>${new Intl.NumberFormat('vi-VN').format(finalPrice)} cái chơm và ôm</span></p>
+                        </div>
                     </div>
-                </div>
-            </a>
-        `;
-    }).join('');
+                </a>
+            `;
+        }).join('');
+        return gridHtml;
+    };
+
+    html += createGrid('Các bánh choa công chúa', banh);
+    html += createGrid('Đồ ăng ngonn choa công chúa', doAn);
+    html += createGrid('Đồ uống choa công chúa iuu', doUong);
+
+    grid.innerHTML = html;
 }
 
 async function loadProductDetail() {

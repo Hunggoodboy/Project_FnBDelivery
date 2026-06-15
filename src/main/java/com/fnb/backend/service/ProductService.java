@@ -41,7 +41,8 @@ public class ProductService {
                     p.getDescription(),
                     (n != null) ? n.getCalories() : 0,
                     p.getPrice(),
-                    p.getDiscount()
+                    p.getDiscount(),
+                    p.getCategoryId()
             );
         }).collect(Collectors.toList());
     }
@@ -104,7 +105,8 @@ public class ProductService {
                                                                                     p.getDescription(),
                                                                                     (rn != null) ? rn.getCalories() : 0,
                                                                                     p.getPrice(),
-                                                                                    p.getDiscount()
+                                                                                    p.getDiscount(),
+                                                                                    p.getCategoryId()
                                                                             );
                                                                         }).collect(Collectors.toList());
 
