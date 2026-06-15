@@ -42,15 +42,43 @@ function toggleMobileMenu() {
 // Initialization
 document.addEventListener('DOMContentLoaded', async () => {
     injectCartHTML();
-    injectLoginPromptHTML();
     await checkAuth();
 
     const path = window.location.pathname;
     const isHome = path === '/' || path.endsWith('/index.html') || path === '';
 
+    setupSearch();
+
     if (isHome) {
         await loadProducts();
-        setupSearch();
+        
+        const params = new URLSearchParams(window.location.search);
+        const searchQuery = params.get('search');
+        if (searchQuery) {
+            const query = searchQuery.toLowerCase().trim();
+            
+            const grid = document.getElementById('product-list');
+            if (grid) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 40px; font-size: 1.2rem; color: #ff4d6d;"><i class="fa-solid fa-spinner fa-spin"></i> công chúa iu của anh chờ xíu nhée anh đang tìm choa công chúa ây gùi nè</p>';
+            }
+            
+            const searchInput = document.getElementById('search');
+            if (searchInput) searchInput.value = searchQuery;
+            
+            setTimeout(() => {
+                const productSection = document.querySelector('.favorite-products');
+                if (productSection) productSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+            
+            setTimeout(() => {
+                const filtered = state.products.filter(p =>
+                    (p.name && p.name.toLowerCase().includes(query)) ||
+                    (p.description && p.description.toLowerCase().includes(query))
+                );
+                renderProducts(filtered);
+            }, 800);
+        }
+        
         restoreChatHistory();
     }
 
@@ -59,19 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-function injectLoginPromptHTML() {
-    if (document.getElementById('loginPromptModal')) return;
-    const html = `
-        <div id="loginPromptModal" class="love-modal-overlay">
-            <div class="love-modal-content">
-                <div class="love-heart">💖</div>
-                <p>Anh chin mời công chúa Trần Lê Khánh Chi iu của anh đăng nhập đã ùi đặt bánh nhéee</p>
-                <button class="love-btn" onclick="window.location.href='/login.html'">Dạ em đăng nhập lun ây ạ</button>
-            </div>
-        </div>
-    `;
-    document.body.insertAdjacentHTML('beforeend', html);
-}
+
 
 function injectCartHTML() {
     if (document.getElementById('cartSidebar')) return;
@@ -302,13 +318,16 @@ async function logout() {
 }
 
 async function loadProducts() {
+    const grid = document.getElementById('product-list');
+    if (grid) {
+        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 40px; font-size: 1.2rem; color: #ff4d6d;"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải danh sách bánh ngon cho công chúa...</p>';
+    }
     try {
         const response = await api.get('/api/products');
         state.products = response || [];
         renderProducts(state.products);
     } catch (e) {
         console.error('Failed to load products', e);
-        const grid = document.getElementById('product-list');
         if (grid) grid.innerHTML = '<p style="grid-column: 1/-1; padding: 20px;">Không thể tải danh sách bánh. Vui lòng thử lại sau.</p>';
     }
 }
@@ -476,7 +495,7 @@ window.changeDetailQty = (delta) => {
 
 async function handleAddToCart(productId) {
     if (!state.user) {
-        document.getElementById('loginPromptModal').classList.add('active');
+        window.location.href = '/login.html';
         return;
     }
 
@@ -492,19 +511,59 @@ async function handleAddToCart(productId) {
 }
 
 function setupSearch() {
-    const searchInput = document.querySelector('.typing');
+    const searchInput = document.getElementById('search');
+    const searchBtn = document.querySelector('.nav .find button');
+
+    const handleSearch = () => {
+        if (!searchInput) return;
+        const query = searchInput.value.trim();
+        if (query) {
+            window.location.href = `/?search=${encodeURIComponent(query)}#product-list`;
+        } else {
+            window.location.href = `/#product-list`;
+        }
+    };
+
     if (searchInput) {
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleSearch();
+            }
+        });
+        
         searchInput.addEventListener('input', (e) => {
+            const path = window.location.pathname;
+            const isHome = path === '/' || path.endsWith('/index.html') || path === '';
+            if (!isHome) return;
+            
             const query = e.target.value.toLowerCase().trim();
             if (!query) {
                 renderProducts(state.products);
                 return;
             }
-            const filtered = state.products.filter(p =>
-                (p.name && p.name.toLowerCase().includes(query)) ||
-                (p.description && p.description.toLowerCase().includes(query))
-            );
-            renderProducts(filtered);
+            
+            const grid = document.getElementById('product-list');
+            if (grid) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 40px; font-size: 1.2rem; color: #ff4d6d;"><i class="fa-solid fa-spinner fa-spin"></i> công chúa iu của anh chờ xíu nhée anh đang tìm choa công chúa ây gùi nè</p>';
+            }
+            
+            if (window.searchTimeout) clearTimeout(window.searchTimeout);
+            
+            window.searchTimeout = setTimeout(() => {
+                const filtered = state.products.filter(p =>
+                    (p.name && p.name.toLowerCase().includes(query)) ||
+                    (p.description && p.description.toLowerCase().includes(query))
+                );
+                renderProducts(filtered);
+            }, 600);
+        });
+    }
+
+    if (searchBtn) {
+        searchBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            handleSearch();
         });
     }
 }
@@ -513,7 +572,7 @@ function setupSearch() {
 async function handleBuyNow(productId) {
     // 1. Kiểm tra đăng nhập trước khi cho đi "shopping" tiếp
     if (!state.user) {
-        document.getElementById('loginPromptModal').classList.add('active');
+        window.location.href = '/login.html';
         return;
     }
 

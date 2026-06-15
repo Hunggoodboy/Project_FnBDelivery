@@ -68,6 +68,14 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const phone_number = document.getElementById('phone_number').value;
     const password = document.getElementById('password').value;
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerHTML;
+
+    // Show loading state
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang đăng nhập...';
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = '0.7';
+    submitBtn.style.cursor = 'not-allowed';
 
     try {
         const response = await fetch('/api/auth/login', {
@@ -83,9 +91,20 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             const errorEl = document.getElementById('error-msg');
             errorEl.style.display = 'block';
             errorEl.querySelector('span').innerText = error;
+            
+            // Revert button state
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
+            submitBtn.style.cursor = 'pointer';
         }
     } catch (err) {
         alert('Đã xảy ra lỗi: ' + err.message);
+        // Revert button state
+        submitBtn.innerHTML = originalBtnText;
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+        submitBtn.style.cursor = 'pointer';
     }
 });
 </script>

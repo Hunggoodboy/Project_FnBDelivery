@@ -760,7 +760,7 @@ body {
 
 /* 1. Khóa thanh cuộn của Body lại (để cuộn trong container) */
 body {
-    overflow: hidden; /* Ẩn thanh cuộn mặc định của trình duyệt */
+    overflow: auto; /* Hiển thị thanh cuộn mặc định của trình duyệt */
 }
 
 /* 2. Menu phải cố định (Fixed) để luôn nổi trên cùng khi cuộn */
@@ -775,13 +775,10 @@ body {
 /* 3. Thiết lập hộp chứa cuộn */
 .scroll-container {
     /* Chiều cao bằng đúng màn hình thiết bị */
-    height: 100vh;
+    height: auto;
 
     /* Cho phép cuộn dọc */
-    overflow-y: scroll;
-
-    /* Kích hoạt chế độ bắt dính (Snap) */
-    scroll-snap-type: y mandatory;
+    overflow-y: visible;
 
     /* Cuộn mượt mà */
     scroll-behavior: smooth;
@@ -791,9 +788,6 @@ body {
 .scroll-area {
     /* Mỗi section bắt buộc cao tối thiểu bằng màn hình */
     min-height: 100vh;
-
-    /* Điểm dính: Khi cuộn tới, mép trên (start) của section sẽ dính vào mép trên màn hình */
-    scroll-snap-align: start;
 
     /* Đảm bảo nội dung hiển thị đẹp */
     position: relative;
